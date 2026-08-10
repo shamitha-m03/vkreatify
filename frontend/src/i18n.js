@@ -179,6 +179,7 @@ export const STR = {
     },
     footer: { back: "Back to top" },
     whatsapp: { tip: "Chat on WhatsApp", msg: "Hi vKreatify! I'd like to discuss a project." },
+    sound: { tip: "Ambient Shimmer", on: "Turn ambient sound on", off: "Turn ambient sound off" },
     lang: { toggle: "தமிழ்" },
   },
   ta: {
@@ -359,6 +360,7 @@ export const STR = {
     },
     footer: { back: "மேலே செல்" },
     whatsapp: { tip: "வாட்ஸ்அப்-இல் பேசுங்கள்", msg: "வணக்கம் vKreatify! ஒரு திட்டம் பற்றிப் பேச விரும்புகிறேன்." },
+    sound: { tip: "மெல்லிய ஒலி", on: "ஒலியை இயக்கு", off: "ஒலியை நிறுத்து" },
     lang: { toggle: "EN" },
   },
 };

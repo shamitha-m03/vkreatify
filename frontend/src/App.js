@@ -17,6 +17,7 @@ import Insights from "@/components/Insights";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
+import SoundToggle from "@/components/SoundToggle";
 
 const reduced =
   typeof window !== "undefined" &&
@@ -49,6 +50,7 @@ function App() {
             <Footer />
           </main>
           <WhatsAppFloat />
+          <SoundToggle />
           <Toaster theme="dark" position="bottom-right" />
         </div>
       </ReactLenis>

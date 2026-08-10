@@ -16,6 +16,10 @@ Build a premium, immersive website prototype with a design language very close t
 ## Core Requirements (static)
 - Immersive near-black golden-particle universe; cinematic hero entrance; scroll-as-journey with the sphere evolving per section; typographic editorial sections; custom cursor; hover reveals following cursor; mobile redesign; performance + prefers-reduced-motion support; working contact form; verified company legal details in footer.
 
+## Implemented (2026-08-10, iteration 3)
+- Ambient Shimmer sound toggle: generative Web Audio (brown-noise air bed, warm detuned pad, randomized pentatonic glitter chimes with stereo pan), bottom-right floating button, starts only on visitor tap, EN/TA labels.
+- Decision log: official WhatsApp number — user chose "skip", placeholder stays. Real client work — keep specimen showcase until assets approved. Real quotes — keep (sample) quotes until permission granted.
+
 ## Implemented (2026-08-10, iteration 2)
 - CrystalSphere replaced the particle blob: glass fresnel rim-glow shell (gold front / ice-blue back), ~3,800 gold+blue star-dust particles inside with 4-point sparkle flares, ~2,600 glitter particles pouring outward AND raining down to a glowing pool below, swirl motion, mouse gravity; same scroll-evolution anchors.
 - Case-study system: every portfolio row opens a full-screen case study (portal-rendered, lenis-paused) with scope/industry/year, gallery, overview/challenge/approach, deliverables, next-project navigation. 5 studio specimen projects + 1 genuine self-initiated project (vKreatify Launch).
