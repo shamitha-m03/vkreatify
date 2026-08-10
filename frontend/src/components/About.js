@@ -1,31 +1,19 @@
 import { motion } from "framer-motion";
+import { useLang } from "@/i18n";
 
 const EASE = [0.16, 1, 0.3, 1];
 
-const CHAPTERS = [
-  {
-    title: "Mission",
-    body: "To help businesses communicate their ideas through creative, useful, and memorable digital content.",
-  },
-  {
-    title: "Vision",
-    body: "To become a trusted creative partner for ambitious brands in Coimbatore and beyond.",
-  },
-  {
-    title: "Values",
-    body: "Creativity with purpose. Clear communication. Consistent quality. Timely delivery. Long-term relationships.",
-  },
-];
-
 export default function About() {
+  const { t } = useLang();
+  const a = t("about");
   return (
     <section id="about" data-testid="about-section" className="relative px-6 sm:px-10 py-32 sm:py-56">
       <p className="font-mono-x text-[10px] tracking-[0.35em] uppercase text-[#ffd76a]/70 mb-10">
-        ( About vKreatify )
+        {a.label}
       </p>
 
       <h2 className="font-display font-semibold uppercase tracking-tight leading-[0.95] text-[clamp(2.4rem,7.5vw,6.8rem)] max-w-6xl">
-        {["CREATIVE CONTENT", "THAT CONNECTS", "AND CONVERTS."].map((line, i) => (
+        {(a.lines || []).map((line, i) => (
           <span key={line} className="mask-line">
             <motion.span
               data-testid={`about-line-${i}`}
@@ -42,7 +30,7 @@ export default function About() {
       </h2>
 
       <div className="mt-24 sm:mt-36 grid gap-16 sm:gap-0">
-        {CHAPTERS.map((c, i) => (
+        {(a.chapters || []).map((c, i) => (
           <motion.div
             key={c.title}
             data-testid={`about-chapter-${i}`}
@@ -72,9 +60,7 @@ export default function About() {
         transition={{ duration: 1.2 }}
         className="mt-20 max-w-2xl text-sm leading-relaxed text-white/40"
       >
-        vKreatify Digital Solutions Private Limited is a Coimbatore-based creative
-        digital solutions company. Every design, reel, and content idea is developed
-        to help a brand communicate better and connect with its audience.
+        {a.para}
       </motion.p>
     </section>
   );

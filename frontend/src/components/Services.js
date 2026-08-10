@@ -1,33 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-
-const SERVICES = [
-  {
-    title: "Reels & Short-Form Video",
-    tag: "Motion",
-    items: ["Concept Development", "Script & Planning", "Video Editing", "Motion Graphics", "Platform-Ready Exports"],
-  },
-  {
-    title: "Creative Posters",
-    tag: "Static",
-    items: ["Promotional Posters", "Festival Creatives", "Product Announcements", "Event Posters", "Offer Designs"],
-  },
-  {
-    title: "Visual Branding",
-    tag: "Identity",
-    items: ["Logo Design", "Colour Palette", "Typography", "Social Templates", "Brand Guidelines"],
-  },
-  {
-    title: "Social Media Content",
-    tag: "Presence",
-    items: ["Content Calendars", "Caption Ideas", "Carousel Designs", "Story Creatives", "Campaign Creatives"],
-  },
-  {
-    title: "Brand Communication",
-    tag: "Message",
-    items: ["Brand Messaging", "Campaign Concepts", "Promotional Copy", "Product Communication", "Customer Content"],
-  },
-];
+import { useLang } from "@/i18n";
 
 function Row({ s, i }) {
   const onMove = (e) => {
@@ -67,7 +40,7 @@ function Row({ s, i }) {
       <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-all duration-700 ease-out-expo">
         <div className="overflow-hidden">
           <div className="flex flex-wrap gap-2.5 pt-6 pl-10 sm:pl-24">
-            {s.items.map((item) => (
+            {(s.chips || []).map((item) => (
               <span
                 key={item}
                 className="font-grotesk text-[10px] sm:text-xs tracking-[0.18em] uppercase text-white/50 border border-white/15 rounded-full px-4 py-1.5"
@@ -83,21 +56,23 @@ function Row({ s, i }) {
 }
 
 export default function Services() {
+  const { t } = useLang();
+  const sv = t("services");
   return (
     <section id="services" data-testid="services-section" className="relative px-6 sm:px-10 py-32 sm:py-48">
       <div className="flex items-end justify-between mb-14 sm:mb-20">
         <div>
           <p className="font-mono-x text-[10px] tracking-[0.35em] uppercase text-[#ffd76a]/70 mb-4">
-            ( What We Do )
+            {sv.label}
           </p>
           <h2 className="font-display font-semibold uppercase tracking-tight leading-none text-[clamp(2.4rem,6.5vw,5.5rem)]">
-            Services
+            {sv.title}
           </h2>
         </div>
         <span className="font-mono-x text-xs text-white/30">05</span>
       </div>
       <div className="border-t border-white/10">
-        {SERVICES.map((s, i) => (
+        {(sv.items || []).map((s, i) => (
           <Row key={s.title} s={s} i={i} />
         ))}
       </div>

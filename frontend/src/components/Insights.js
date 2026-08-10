@@ -1,28 +1,25 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-
-const POSTS = [
-  { year: "2026", cat: "Attention", title: "The First Second Decides Everything" },
-  { year: "2026", cat: "Branding", title: "Why Consistency Beats Campaigns" },
-  { year: "2026", cat: "Craft", title: "Design Is a Business Language" },
-];
+import { useLang } from "@/i18n";
 
 export default function Insights() {
+  const { t } = useLang();
+  const ins = t("insights");
   return (
     <section id="insights" data-testid="insights-section" className="relative px-6 sm:px-10 py-32 sm:py-48">
       <div className="flex items-end justify-between mb-14 sm:mb-20">
         <div>
           <p className="font-mono-x text-[10px] tracking-[0.35em] uppercase text-[#ffd76a]/70 mb-4">
-            ( Journal )
+            {ins.label}
           </p>
           <h2 className="font-display font-semibold uppercase tracking-tight leading-none text-[clamp(2.4rem,6.5vw,5.5rem)]">
-            Insights
+            {ins.title}
           </h2>
         </div>
       </div>
 
       <div className="border-t border-white/10">
-        {POSTS.map((p, i) => (
+        {(ins.posts || []).map((p, i) => (
           <motion.a
             key={p.title}
             href="#insights"

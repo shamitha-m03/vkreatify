@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
+import { useLang } from "@/i18n";
 
 const EASE = [0.16, 1, 0.3, 1];
 
-const LINES = ["WE MAKE", "BRANDS", "UNIGNORABLE."];
-
 export default function Hero() {
+  const { t } = useLang();
+  const h = t("hero");
   const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
   return (
@@ -27,11 +28,11 @@ export default function Hero() {
           transition={{ delay: 1.7, duration: 1.2, ease: EASE }}
           className="font-mono-x text-[10px] sm:text-xs tracking-[0.35em] uppercase text-[#ffd76a]/80 mb-6"
         >
-          Creative Digital Solutions — Coimbatore
+          {h.eyebrow}
         </motion.p>
 
         <h1 className="font-display font-semibold uppercase leading-[0.9] tracking-tight text-[clamp(2.7rem,10.5vw,9.5rem)]">
-          {LINES.map((line, i) => (
+          {(h.lines || []).map((line, i) => (
             <span key={line} className="mask-line">
               <motion.span
                 data-testid={`hero-line-${i}`}
@@ -54,8 +55,7 @@ export default function Hero() {
             transition={{ delay: 1.6, duration: 1, ease: EASE }}
             className="max-w-md text-sm sm:text-base leading-relaxed text-white/55"
           >
-            vKreatify crafts scroll-stopping reels, posters, and visual identities
-            that help businesses attract attention, communicate clearly, and grow online.
+            {h.sub}
           </motion.p>
 
           <motion.div
@@ -72,16 +72,16 @@ export default function Hero() {
             >
               <span className="absolute inset-0 bg-[#ffd76a] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out-expo" />
               <span className="relative group-hover:text-[#050508] transition-colors duration-500">
-                Start Your Project
+                {h.ctaStart}
               </span>
             </button>
             <button
               data-testid="hero-cta-work"
               data-cursor="link"
               onClick={() => go("work")}
-              className="font-grotesk text-[11px] tracking-[0.25em] uppercase text-white/50 hover:text-white transition-colors duration-500"
+              className="font-grotesk text-[11px] tracking-[0.25em] uppercase text-white/50 hover:text-white transition-colors duration-500 whitespace-nowrap"
             >
-              View Our Work →
+              {h.ctaWork}
             </button>
           </motion.div>
         </div>
@@ -95,7 +95,7 @@ export default function Hero() {
         className="absolute bottom-14 right-6 sm:right-10 hidden sm:flex flex-col items-center gap-3"
       >
         <span className="font-mono-x text-[9px] tracking-[0.35em] uppercase text-white/35 rotate-90 origin-center translate-y-[-8px]">
-          Scroll
+          {h.scroll}
         </span>
         <div className="w-px h-16 bg-white/15 overflow-hidden mt-6">
           <div className="w-full h-full bg-[#ffd76a]/70 scroll-line" />

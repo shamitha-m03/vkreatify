@@ -1,11 +1,6 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-
-const LINES = [
-  { text: "ATTENTION IS", gold: false },
-  { text: "EARNED IN THE", gold: false },
-  { text: "FIRST SECOND.", gold: true },
-];
+import { useLang } from "@/i18n";
 
 function Line({ text, gold, progress, index }) {
   const start = index * 0.18;
@@ -28,6 +23,8 @@ function Line({ text, gold, progress, index }) {
 }
 
 export default function Statement() {
+  const { t } = useLang();
+  const s = t("statement");
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -43,11 +40,11 @@ export default function Statement() {
     >
       <div className="max-w-[90rem]">
         <p className="font-mono-x text-[10px] tracking-[0.35em] uppercase text-white/35 mb-10">
-          ( The First Impression )
+          {s.label}
         </p>
         <h2>
-          {LINES.map((l, i) => (
-            <Line key={l.text} {...l} progress={scrollYProgress} index={i} />
+          {(s.lines || []).map((line, i) => (
+            <Line key={line} text={line} gold={i === 2} progress={scrollYProgress} index={i} />
           ))}
         </h2>
         <motion.p
@@ -56,9 +53,7 @@ export default function Statement() {
           }}
           className="mt-12 max-w-lg text-sm sm:text-base leading-relaxed text-white/55"
         >
-          From scroll-stopping reels and creative posters to consistent visual
-          branding — we help businesses present themselves with clarity,
-          creativity, and confidence.
+          {s.para}
         </motion.p>
       </div>
     </section>

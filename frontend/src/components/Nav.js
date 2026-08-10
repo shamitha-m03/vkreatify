@@ -1,17 +1,13 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { useLang } from "@/i18n";
 
-const LINKS = [
-  { id: "about", label: "About" },
-  { id: "services", label: "Services" },
-  { id: "work", label: "Work" },
-  { id: "process", label: "Process" },
-  { id: "insights", label: "Insights" },
-  { id: "contact", label: "Contact" },
-];
+const IDS = ["about", "services", "work", "process", "insights", "contact"];
 
 export default function Nav() {
+  const { t, lang, setLang } = useLang();
+  const LINKS = IDS.map((id) => ({ id, label: t(`nav.${id}`) }));
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("");
@@ -76,6 +72,14 @@ export default function Nav() {
               />
             </button>
           ))}
+          <button
+            data-testid="lang-toggle"
+            data-cursor="link"
+            onClick={() => setLang(lang === "en" ? "ta" : "en")}
+            className="font-grotesk text-[11px] tracking-[0.2em] uppercase text-[#ffd76a]/80 hover:text-[#ffd76a] border border-[#ffd76a]/30 hover:border-[#ffd76a]/70 rounded-full px-4 py-1.5 transition-all duration-500"
+          >
+            {t("lang.toggle")}
+          </button>
         </nav>
 
         <button
@@ -103,14 +107,23 @@ export default function Nav() {
               <span className="font-display font-semibold text-lg">
                 v<span className="text-[#ffd76a]">K</span>reatify
               </span>
-              <button
-                data-testid="mobile-menu-close"
-                onClick={() => setOpen(false)}
-                aria-label="Close menu"
-                className="text-white/80"
-              >
-                <X size={24} strokeWidth={1.5} />
-              </button>
+              <div className="flex items-center gap-4">
+                <button
+                  data-testid="mobile-lang-toggle"
+                  onClick={() => setLang(lang === "en" ? "ta" : "en")}
+                  className="font-grotesk text-[11px] tracking-[0.2em] uppercase text-[#ffd76a]/80 border border-[#ffd76a]/30 rounded-full px-4 py-1.5"
+                >
+                  {t("lang.toggle")}
+                </button>
+                <button
+                  data-testid="mobile-menu-close"
+                  onClick={() => setOpen(false)}
+                  aria-label="Close menu"
+                  className="text-white/80"
+                >
+                  <X size={24} strokeWidth={1.5} />
+                </button>
+              </div>
             </div>
             <div className="flex-1 flex flex-col justify-center px-8 gap-2">
               {LINKS.map((l, i) => (

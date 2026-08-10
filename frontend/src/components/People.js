@@ -1,25 +1,17 @@
 import { useRef, useState } from "react";
 import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
+import { useLang } from "@/i18n";
 
-const PEOPLE = [
-  {
-    name: "Ramesh Babu Pemmasani",
-    role: "Director",
-    img: "https://images.unsplash.com/photo-1764545973653-94c40d993495?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODd8MHwxfHNlYXJjaHw0fHxwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdCUyMGRhcmslMjBiYWNrZ3JvdW5kfGVufDB8fHx8MTc4NjE5NDU3OXww&ixlib=rb-4.1.0&q=85",
-  },
-  {
-    name: "Mohankumar Naveenkumar",
-    role: "Director",
-    img: "https://images.unsplash.com/photo-1770894807442-108cc33c0a7a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODd8MHwxfHNlYXJjaHwyfHxwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdCUyMGRhcmslMjBiYWNrZ3JvdW5kfGVufDB8fHx8MTc4NjE5NDU3OXww&ixlib=rb-4.1.0&q=85",
-  },
-  {
-    name: "Kamesh",
-    role: "Director",
-    img: "https://images.unsplash.com/photo-1758600587730-a11917c13b85?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODd8MHwxfHNlYXJjaHwzfHxwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdCUyMGRhcmslMjBiYWNrZ3JvdW5kfGVufDB8fHx8MTc4NjE5NDU3OXww&ixlib=rb-4.1.0&q=85",
-  },
+const IMGS = [
+  "https://images.unsplash.com/photo-1764545973653-94c40d993495?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODd8MHwxfHNlYXJjaHw0fHxwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdCUyMGRhcmslMjBiYWNrZ3JvdW5kfGVufDB8fHx8MTc4NjE5NDU3OXww&ixlib=rb-4.1.0&q=85",
+  "https://images.unsplash.com/photo-1770894807442-108cc33c0a7a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODd8MHwxfHNlYXJjaHwyfHxwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdCUyMGRhcmslMjBiYWNrZ3JvdW5kfGVufDB8fHx8MTc4NjE5NDU3OXww&ixlib=rb-4.1.0&q=85",
+  "https://images.unsplash.com/photo-1758600587730-a11917c13b85?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODd8MHwxfHNlYXJjaHwzfHxwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdCUyMGRhcmslMjBiYWNrZ3JvdW5kfGVufDB8fHx8MTc4NjE5NDU3OXww&ixlib=rb-4.1.0&q=85",
 ];
 
 export default function People() {
+  const { t } = useLang();
+  const pe = t("people");
+  const names = pe.names || [];
   const [active, setActive] = useState(null);
   const ref = useRef(null);
   const mx = useMotionValue(0);
@@ -42,16 +34,16 @@ export default function People() {
       className="relative px-6 sm:px-10 py-32 sm:py-48"
     >
       <p className="font-mono-x text-[10px] tracking-[0.35em] uppercase text-[#ffd76a]/70 mb-4">
-        ( The People )
+        {pe.label}
       </p>
       <h2 className="font-display font-semibold uppercase tracking-tight leading-none text-[clamp(2.4rem,6.5vw,5.5rem)] mb-16 sm:mb-24">
-        Leadership
+        {pe.title}
       </h2>
 
       <div className="border-t border-white/10 relative">
-        {PEOPLE.map((p, i) => (
+        {names.map((name, i) => (
           <motion.div
-            key={p.name}
+            key={name}
             data-testid={`people-row-${i}`}
             data-cursor="open"
             data-cursor-label="OPEN"
@@ -67,10 +59,10 @@ export default function People() {
               0{i + 1}
             </span>
             <h3 className="font-display font-medium uppercase tracking-tight leading-none text-[clamp(1.4rem,4vw,3.4rem)] text-white/70 group-hover:text-white group-hover:translate-x-4 transition-all duration-700 ease-out-expo">
-              {p.name}
+              {name}
             </h3>
             <span className="ml-auto font-grotesk text-[11px] tracking-[0.25em] uppercase text-white/30 group-hover:text-white/70 transition-colors duration-500">
-              {p.role}
+              {pe.role}
             </span>
           </motion.div>
         ))}
@@ -87,8 +79,8 @@ export default function People() {
               transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             >
               <img
-                src={PEOPLE[active].img}
-                alt={PEOPLE[active].name}
+                src={IMGS[active]}
+                alt={names[active]}
                 className="w-full h-full object-cover grayscale contrast-110"
                 loading="lazy"
               />

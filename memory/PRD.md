@@ -16,6 +16,13 @@ Build a premium, immersive website prototype with a design language very close t
 ## Core Requirements (static)
 - Immersive near-black golden-particle universe; cinematic hero entrance; scroll-as-journey with the sphere evolving per section; typographic editorial sections; custom cursor; hover reveals following cursor; mobile redesign; performance + prefers-reduced-motion support; working contact form; verified company legal details in footer.
 
+## Implemented (2026-08-10, iteration 2)
+- CrystalSphere replaced the particle blob: glass fresnel rim-glow shell (gold front / ice-blue back), ~3,800 gold+blue star-dust particles inside with 4-point sparkle flares, ~2,600 glitter particles pouring outward AND raining down to a glowing pool below, swirl motion, mouse gravity; same scroll-evolution anchors.
+- Case-study system: every portfolio row opens a full-screen case study (portal-rendered, lenis-paused) with scope/industry/year, gallery, overview/challenge/approach, deliverables, next-project navigation. 5 studio specimen projects + 1 genuine self-initiated project (vKreatify Launch).
+- Voices: slow auto-scrolling client-words marquee (pauses on hover), 6 quotes visibly marked (sample) pending real client permission.
+- Full EN/TA (Tamil) language system: i18n.js dictionary covering every section incl. case studies + form + toasts; nav toggle (desktop + mobile), Noto Sans Tamil, localStorage persistence.
+- WhatsApp float: appears after hero, wa.me deep link with prefilled bilingual message. Number from REACT_APP_WHATSAPP_NUMBER — currently PLACEHOLDER 919999999999 until official number is shared.
+
 ## Implemented (2026-08-10)
 - Three.js particle system: ~5,600-particle golden sphere + 1,500 glitter particles pouring outward + blue-white dust; mouse gravitational displacement + rotation-to-cursor; scroll-driven evolution (sphere → spread → network lines → dissolve at footer); mobile/lowfx density modes; reduced-motion static frame.
 - Cinematic hero: masked line-by-line reveal "WE MAKE / BRANDS / UNIGNORABLE.", staged 2.5s entrance, scroll indicator, dual CTAs.

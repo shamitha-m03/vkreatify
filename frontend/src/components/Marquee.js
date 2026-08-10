@@ -1,15 +1,9 @@
 import { Asterisk } from "lucide-react";
-
-const ITEMS = [
-  "Reels",
-  "Posters",
-  "Visual Branding",
-  "Brand Content",
-  "Campaigns",
-  "Making Your Brand Into Braaaand",
-];
+import { useLang } from "@/i18n";
 
 export default function Marquee() {
+  const { t } = useLang();
+  const ITEMS = t("marquee.items") || [];
   const row = [...ITEMS, ...ITEMS, ...ITEMS];
   return (
     <div

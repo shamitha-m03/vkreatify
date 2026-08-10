@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import axios from "axios";
+import { useLang } from "@/i18n";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const EASE = [0.16, 1, 0.3, 1];
@@ -10,6 +11,9 @@ const inputCls =
   "w-full bg-transparent border-b border-white/15 focus:border-[#ffd76a]/70 outline-none py-3.5 text-sm text-white placeholder:text-white/25 transition-colors duration-500";
 
 export default function Contact() {
+  const { t } = useLang();
+  const c = t("contact");
+  const f = c.form;
   const [form, setForm] = useState({
     name: "",
     company: "",
@@ -28,10 +32,10 @@ export default function Contact() {
     setSending(true);
     try {
       await axios.post(`${API}/contact`, form);
-      toast.success("Message received. The vKreatify team will get back to you.");
+      toast.success(f.success);
       setForm({ name: "", company: "", phone: "", email: "", service: "", budget: "", details: "" });
     } catch {
-      toast.error("Could not send right now. Please try again.");
+      toast.error(f.error);
     } finally {
       setSending(false);
     }
@@ -40,11 +44,11 @@ export default function Contact() {
   return (
     <section id="contact" data-testid="contact-section" className="relative px-6 sm:px-10 py-32 sm:py-56">
       <p className="font-mono-x text-[10px] tracking-[0.35em] uppercase text-[#ffd76a]/70 mb-10">
-        ( Start Something )
+        {c.label}
       </p>
 
       <h2 className="font-display font-semibold uppercase tracking-tight leading-[0.95] text-[clamp(2.4rem,7.5vw,6.8rem)] max-w-6xl mb-20 sm:mb-32">
-        {["LET'S CREATE", "SOMETHING", "MEMORABLE."].map((line, i) => (
+        {(c.lines || []).map((line, i) => (
           <span key={line} className="mask-line">
             <motion.span
               className={`block ${i === 2 ? "text-stroke-gold" : ""}`}
@@ -68,12 +72,11 @@ export default function Contact() {
           className="lg:col-span-4 space-y-10"
         >
           <p className="text-sm leading-relaxed text-white/55 max-w-xs">
-            Have a project, campaign, or brand idea? Tell us what you need, and
-            the vKreatify team will get back to you.
+            {c.para}
           </p>
           <div className="space-y-6 font-mono-x text-xs">
             <div>
-              <p className="text-white/30 tracking-[0.3em] uppercase mb-1.5">Instagram</p>
+              <p className="text-white/30 tracking-[0.3em] uppercase mb-1.5">{c.instagramLabel}</p>
               <a
                 data-testid="contact-instagram-link"
                 data-cursor="link"
@@ -86,14 +89,14 @@ export default function Contact() {
               </a>
             </div>
             <div>
-              <p className="text-white/30 tracking-[0.3em] uppercase mb-1.5">Studio</p>
+              <p className="text-white/30 tracking-[0.3em] uppercase mb-1.5">{c.studioLabel}</p>
               <p className="text-white/60 leading-relaxed">
                 Balaji Nagar, Coimbatore South<br />Tamil Nadu — 641044, India
               </p>
             </div>
             <div>
-              <p className="text-white/30 tracking-[0.3em] uppercase mb-1.5">Phone / WhatsApp / Email</p>
-              <p className="text-white/60">Shared on project inquiry</p>
+              <p className="text-white/30 tracking-[0.3em] uppercase mb-1.5">{c.contactLabel}</p>
+              <p className="text-white/60">{c.contactValue}</p>
             </div>
           </div>
         </motion.div>
@@ -107,30 +110,26 @@ export default function Contact() {
           transition={{ duration: 0.9, delay: 0.15, ease: EASE }}
           className="lg:col-span-8 grid sm:grid-cols-2 gap-x-10 gap-y-8"
         >
-          <input data-testid="contact-input-name" required placeholder="Name *" value={form.name} onChange={set("name")} className={inputCls} />
-          <input data-testid="contact-input-company" placeholder="Company Name" value={form.company} onChange={set("company")} className={inputCls} />
-          <input data-testid="contact-input-phone" placeholder="Phone Number" value={form.phone} onChange={set("phone")} className={inputCls} />
-          <input data-testid="contact-input-email" required type="email" placeholder="Email Address *" value={form.email} onChange={set("email")} className={inputCls} />
+          <input data-testid="contact-input-name" required placeholder={f.name} value={form.name} onChange={set("name")} className={inputCls} />
+          <input data-testid="contact-input-company" placeholder={f.company} value={form.company} onChange={set("company")} className={inputCls} />
+          <input data-testid="contact-input-phone" placeholder={f.phone} value={form.phone} onChange={set("phone")} className={inputCls} />
+          <input data-testid="contact-input-email" required type="email" placeholder={f.email} value={form.email} onChange={set("email")} className={inputCls} />
           <select data-testid="contact-select-service" required value={form.service} onChange={set("service")} className={`${inputCls} ${form.service ? "" : "text-white/25"} [&>option]:bg-[#0a0a0e]`}>
-            <option value="" disabled>Service Required *</option>
-            <option>Reels & Short-Form Video</option>
-            <option>Creative Posters</option>
-            <option>Visual Branding</option>
-            <option>Social Media Content</option>
-            <option>Brand Communication</option>
-            <option>Something Else</option>
+            <option value="" disabled>{f.service}</option>
+            {f.services.map((s) => (
+              <option key={s}>{s}</option>
+            ))}
           </select>
           <select data-testid="contact-select-budget" value={form.budget} onChange={set("budget")} className={`${inputCls} ${form.budget ? "" : "text-white/25"} [&>option]:bg-[#0a0a0e]`}>
-            <option value="" disabled>Project Budget</option>
-            <option>Under ₹25,000</option>
-            <option>₹25,000 — ₹75,000</option>
-            <option>₹75,000 — ₹2,00,000</option>
-            <option>Above ₹2,00,000</option>
+            <option value="" disabled>{f.budget}</option>
+            {f.budgets.map((b) => (
+              <option key={b}>{b}</option>
+            ))}
           </select>
           <textarea
             data-testid="contact-input-details"
             required
-            placeholder="Project Details *"
+            placeholder={f.details}
             rows={4}
             value={form.details}
             onChange={set("details")}
@@ -146,7 +145,7 @@ export default function Contact() {
             >
               <span className="absolute inset-0 bg-[#ffd76a] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out-expo" />
               <span className="relative group-hover:text-[#050508] transition-colors duration-500">
-                {sending ? "Sending..." : "Send Inquiry"}
+                {sending ? f.sending : f.submit}
               </span>
             </button>
           </div>
