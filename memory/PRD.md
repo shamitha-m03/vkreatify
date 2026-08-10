@@ -16,6 +16,10 @@ Build a premium, immersive website prototype with a design language very close t
 ## Core Requirements (static)
 - Immersive near-black golden-particle universe; cinematic hero entrance; scroll-as-journey with the sphere evolving per section; typographic editorial sections; custom cursor; hover reveals following cursor; mobile redesign; performance + prefers-reduced-motion support; working contact form; verified company legal details in footer.
 
+## Implemented (2026-08-10, iteration 4)
+- Sphere Finale: contact/footer scroll drives uCrack — glowing jagged fissures spread across the glass shell, the shell dissolves, inner star-dust bursts outward, glitter rain accelerates and spreads wider, floor glow pool swells. Sphere reforms intact before the crack for narrative contrast.
+- Bug fix (user-reported "not glittering at all"): duplicated code tail in CrystalSphere.js broke the webpack bundle so the canvas never rendered — removed, and boosted glitter (sharper twinkle blink, 28-34% star-flare particles, pulsing glint sizes, brighter flare spikes). Verified by testing_agent: all 4 checks PASS (hero glitter, finale, text layers, no console shader errors).
+
 ## Implemented (2026-08-10, iteration 3)
 - Ambient Shimmer sound toggle: generative Web Audio (brown-noise air bed, warm detuned pad, randomized pentatonic glitter chimes with stereo pan), bottom-right floating button, starts only on visitor tap, EN/TA labels.
 - Decision log: official WhatsApp number — user chose "skip", placeholder stays. Real client work — keep specimen showcase until assets approved. Real quotes — keep (sample) quotes until permission granted.

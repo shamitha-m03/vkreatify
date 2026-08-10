@@ -43,6 +43,7 @@ uniform float uSpread;
 uniform float uFade;
 uniform float uPx;
 uniform float uSwirl;
+uniform float uCrack;
 varying float vAlpha;
 varying float vFlare;
 varying vec3 vCol;
@@ -53,17 +54,20 @@ void main() {
   pos.xz = mat2(c, -s, s, c) * pos.xz;
   pos.y += sin(uTime * 0.4 + aSeed * 20.0) * 0.05;
   pos *= (1.0 + uSpread * (0.5 + aSeed));
+  pos *= (1.0 + uCrack * (1.2 + aSeed * 1.6));
+  pos.y -= uCrack * (0.3 + aSeed * 1.2);
   vec4 world = modelMatrix * vec4(pos, 1.0);
   float d = distance(world.xyz, uMouse);
   float f = smoothstep(1.5, 0.0, d);
   world.xyz += normalize(world.xyz - uMouse + vec3(0.0001)) * f * 0.45;
   vec4 mv = viewMatrix * world;
   gl_Position = projectionMatrix * mv;
-  float tw = 0.55 + 0.45 * sin(uTime * (1.5 + aSeed * 3.0) + aSeed * 60.0);
-  vAlpha = uFade * tw * 0.92;
+  float tw = pow(0.5 + 0.5 * sin(uTime * (1.5 + aSeed * 3.0) + aSeed * 60.0), 2.0) * 1.35;
+  vAlpha = uFade * min(tw, 1.0) * 0.95 * (1.0 - smoothstep(0.85, 1.0, uCrack) * 0.55);
   vFlare = aFlare;
   vCol = aCol;
-  gl_PointSize = aSize * uPx * (12.0 / -mv.z);
+  float sizePulse = 1.0 + aFlare * 0.55 * sin(uTime * 6.0 + aSeed * 90.0);
+  gl_PointSize = aSize * sizePulse * uPx * (12.0 / -mv.z);
 }
 `;
 
@@ -80,6 +84,7 @@ uniform float uTime;
 uniform float uSpread;
 uniform float uFade;
 uniform float uPx;
+uniform float uCrack;
 varying float vAlpha;
 varying float vFlare;
 varying vec3 vCol;
@@ -89,13 +94,13 @@ void main() {
   float alpha;
   if (aMode < 0.5) {
     float e = pow(t, 1.6);
-    pos = position + aDir * e * aLen * (1.0 + uSpread * 0.8);
+    pos = position + aDir * e * aLen * (1.0 + uSpread * 0.8 + uCrack * 2.2);
     pos.y -= t * t * aLen * 0.1;
     pos.x += sin(aSeed * 21.0 + uTime * 0.8) * 0.05;
-    alpha = (1.0 - t) * smoothstep(0.0, 0.05, t);
+    alpha = (1.0 - t) * smoothstep(0.0, 0.05, t) * (1.0 + uCrack * 0.6);
   } else {
     float floorY = -2.02;
-    float fallT = 0.55;
+    float fallT = 0.55 - uCrack * 0.25;
     if (t < fallT) {
       float ft = t / fallT;
       pos = position;
@@ -105,7 +110,7 @@ void main() {
       alpha = smoothstep(0.0, 0.06, t);
     } else {
       float st = (t - fallT) / (1.0 - fallT);
-      pos = vec3(position.x, floorY, position.z) + vec3(aDir.x, 0.0, aDir.z) * st * aLen * 0.6;
+      pos = vec3(position.x, floorY, position.z) + vec3(aDir.x, 0.0, aDir.z) * st * aLen * (0.6 + uCrack * 1.4);
       pos.y += sin(st * 3.1415) * 0.03;
       alpha = 1.0 - st * 0.9;
     }
@@ -154,9 +159,9 @@ void main() {
   float d = length(uv);
   float disc = smoothstep(0.5, 0.05, d);
   float core = smoothstep(0.15, 0.0, d);
-  float fx = smoothstep(0.055, 0.0, abs(uv.y)) * smoothstep(0.5, 0.0, abs(uv.x));
-  float fy = smoothstep(0.055, 0.0, abs(uv.x)) * smoothstep(0.5, 0.0, abs(uv.y));
-  float star = (fx + fy) * 0.55;
+  float fx = smoothstep(0.045, 0.0, abs(uv.y)) * smoothstep(0.5, 0.0, abs(uv.x));
+  float fy = smoothstep(0.045, 0.0, abs(uv.x)) * smoothstep(0.5, 0.0, abs(uv.y));
+  float star = (fx + fy) * 0.8;
   float a = disc * (1.0 - vFlare * 0.35) + star * vFlare;
   a *= vAlpha;
   if (a < 0.012) discard;
@@ -176,12 +181,13 @@ void main() {
 const GLOW_FRAG = `
 precision mediump float;
 uniform float uFade;
+uniform float uCrack;
 varying vec2 vUv;
 void main() {
   float d = length(vUv - 0.5) * 2.0;
   float a = smoothstep(1.0, 0.0, d);
   a *= a;
-  gl_FragColor = vec4(vec3(1.0, 0.78, 0.38), a * 0.24 * uFade);
+  gl_FragColor = vec4(vec3(1.0, 0.78, 0.38), a * 0.24 * uFade * (1.0 + uCrack * 2.0));
 }
 `;
 
@@ -189,13 +195,13 @@ const GOLDS = ["#ffd76a", "#ffb84d", "#ff9d2e", "#fff2c9", "#ffc95e"];
 const BLUES = ["#9cc8ff", "#6e8cff", "#bfe0ff", "#7fb2ff"];
 
 const ANCHORS = [
-  { p: 0.0, x: 0.55, y: 0.0, z: 0.0, s: 1.0, spread: 0.0, net: 0.0, fade: 1.0 },
-  { p: 0.13, x: 0.35, y: 0.18, z: -0.4, s: 0.9, spread: 0.28, net: 0.0, fade: 1.0 },
-  { p: 0.3, x: -0.8, y: 0.0, z: -0.6, s: 0.8, spread: 0.72, net: 0.0, fade: 0.95 },
-  { p: 0.48, x: 0.8, y: -0.05, z: -0.3, s: 0.85, spread: 0.35, net: 1.0, fade: 0.95 },
-  { p: 0.66, x: -0.25, y: 0.1, z: -0.9, s: 0.68, spread: 0.15, net: 0.2, fade: 0.85 },
-  { p: 0.84, x: 0.2, y: 0.0, z: -1.2, s: 0.58, spread: 0.95, net: 0.0, fade: 0.6 },
-  { p: 1.0, x: 0.0, y: -0.2, z: -1.6, s: 0.5, spread: 1.3, net: 0.0, fade: 0.12 },
+  { p: 0.0, x: 0.55, y: 0.0, z: 0.0, s: 1.0, spread: 0.0, net: 0.0, fade: 1.0, crack: 0.0 },
+  { p: 0.13, x: 0.35, y: 0.18, z: -0.4, s: 0.9, spread: 0.28, net: 0.0, fade: 1.0, crack: 0.0 },
+  { p: 0.3, x: -0.8, y: 0.0, z: -0.6, s: 0.8, spread: 0.72, net: 0.0, fade: 0.95, crack: 0.0 },
+  { p: 0.48, x: 0.8, y: -0.05, z: -0.3, s: 0.85, spread: 0.35, net: 1.0, fade: 0.95, crack: 0.0 },
+  { p: 0.66, x: -0.2, y: 0.05, z: -0.9, s: 0.7, spread: 0.1, net: 0.15, fade: 0.9, crack: 0.0 },
+  { p: 0.84, x: 0.15, y: 0.0, z: -0.7, s: 0.72, spread: 0.05, net: 0.0, fade: 0.95, crack: 0.0 },
+  { p: 1.0, x: 0.0, y: 0.05, z: -0.7, s: 0.78, spread: 0.35, net: 0.0, fade: 0.7, crack: 1.0 },
 ];
 
 function sample(p) {
@@ -210,7 +216,7 @@ function sample(p) {
   }
   const t = a === b ? 0 : (p - a.p) / (b.p - a.p);
   const out = {};
-  for (const k of ["x", "y", "z", "s", "spread", "net", "fade"]) {
+  for (const k of ["x", "y", "z", "s", "spread", "net", "fade", "crack"]) {
     out[k] = a[k] + (b[k] - a[k]) * t;
   }
   return out;
@@ -252,13 +258,14 @@ export default function CrystalSphere() {
       uSpread: { value: 0 },
       uFade: { value: 0 },
       uPx: { value: renderer.getPixelRatio() },
+      uCrack: { value: 0 },
     };
 
     const glassGeo = new THREE.SphereGeometry(R, 72, 48);
     const glassMat = new THREE.ShaderMaterial({
       vertexShader: GLASS_VERT,
       fragmentShader: GLASS_FRAG,
-      uniforms: { uRim: { value: col("#ffcf6a") }, uTint: { value: col("#3f6dff") }, uFade: shared.uFade, uTime: shared.uTime },
+      uniforms: { uRim: { value: col("#ffcf6a") }, uTint: { value: col("#3f6dff") }, uFade: shared.uFade, uTime: shared.uTime, uCrack: shared.uCrack },
       transparent: true,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
@@ -269,7 +276,7 @@ export default function CrystalSphere() {
     const glassBackMat = new THREE.ShaderMaterial({
       vertexShader: GLASS_VERT,
       fragmentShader: GLASS_FRAG,
-      uniforms: { uRim: { value: col("#7fa8ff") }, uTint: { value: col("#ffb84d") }, uFade: shared.uFade, uTime: shared.uTime },
+      uniforms: { uRim: { value: col("#7fa8ff") }, uTint: { value: col("#ffb84d") }, uFade: shared.uFade, uTime: shared.uTime, uCrack: shared.uCrack },
       transparent: true,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
@@ -330,7 +337,7 @@ export default function CrystalSphere() {
       pos[i * 3 + 1] = dy * rr;
       pos[i * 3 + 2] = dz * rr;
       const gold = Math.random() < 0.68;
-      const flare = Math.random() < 0.14 ? 1 : 0;
+      const flare = Math.random() < 0.28 ? 1 : 0;
       return {
         size: flare ? 3.0 + Math.random() * 2.8 : 1.4 + Math.random() * 2.6,
         seed: Math.random(),
@@ -374,7 +381,7 @@ export default function CrystalSphere() {
       return {
         size: 1.2 + Math.random() * 2.4,
         seed: Math.random(),
-        flare: Math.random() < 0.2 ? 1 : 0,
+        flare: Math.random() < 0.34 ? 1 : 0,
         color: gold ? pick(GOLDS) : pick(BLUES),
         speed: 0.07 + Math.random() * 0.15,
         mode: rain ? 1 : 0,
@@ -395,7 +402,7 @@ export default function CrystalSphere() {
     const glowMat = new THREE.ShaderMaterial({
       vertexShader: GLOW_VERT,
       fragmentShader: GLOW_FRAG,
-      uniforms: { uFade: shared.uFade },
+      uniforms: { uFade: shared.uFade, uCrack: shared.uCrack },
       transparent: true,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
@@ -469,7 +476,7 @@ export default function CrystalSphere() {
     };
     window.addEventListener("resize", onResize);
 
-    const cur = { x: 0.55, y: 0, z: 0, s: 1, spread: 0, net: 0, fade: 0 };
+    const cur = { x: 0.55, y: 0, z: 0, s: 1, spread: 0, net: 0, fade: 0, crack: 0 };
     let rotY = 0;
     let raf;
     const clock = new THREE.Clock();
@@ -493,6 +500,9 @@ export default function CrystalSphere() {
       shared.uMouse.value.copy(mouseWorld);
       shared.uSpread.value = cur.spread;
       shared.uFade.value = cur.fade;
+      shared.uCrack.value = cur.crack;
+      innerMat.uniforms.uSwirl.value = 0.06 * (1 + cur.crack * 3);
+      glow.scale.setScalar(1 + cur.crack * 0.8);
       lineMat.opacity = cur.net * cur.fade * 0.2;
 
       rotY += 0.0009;
