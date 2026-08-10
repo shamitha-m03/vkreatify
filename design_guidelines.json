@@ -1,0 +1,102 @@
+{
+  "theme": "dark",
+  "brand_name": "AUREA",
+  "app_type": "immersive_marketing_site",
+  "typography": {
+    "headings": "Clash Display or Cabinet Grotesk (Expressive, large, modern Grotesk). Use font-light to font-black for tension. DO NOT USE Inter for headings.",
+    "body": "Manrope or IBM Plex Sans (Clean, highly legible geometric sans)",
+    "scale": {
+      "h1": "text-5xl sm:text-7xl lg:text-8xl tracking-tighter uppercase",
+      "h2": "text-4xl sm:text-6xl lg:text-7xl tracking-tight uppercase",
+      "h3": "text-2xl sm:text-4xl tracking-tight",
+      "body": "text-base sm:text-lg leading-relaxed",
+      "labels": "text-xs tracking-[0.2em] uppercase"
+    }
+  },
+  "colors": {
+    "background": "#050508",
+    "text_primary": "#FFFFFF",
+    "text_secondary": "#A1A1AA",
+    "accent_gold": "#FFD700",
+    "accent_gold_glow": "rgba(255, 215, 0, 0.4)",
+    "glow_blue": "rgba(14, 165, 233, 0.15)",
+    "surface": "rgba(255, 255, 255, 0.03)",
+    "border": "rgba(255, 255, 255, 0.1)"
+  },
+  "visual_enhancers": {
+    "background": "Near-black space (#050508) with deep blue/white atmospheric glow using radial gradients. Add subtle CSS noise overlay.",
+    "particles": "Signature golden particle sphere using React Three Fiber. Glitter pouring outward.",
+    "cursor": "Custom framer-motion cursor (small point default, expands on interactive elements to a glowing orb containing 'VIEW' or 'OPEN' text).",
+    "glassmorphism": "Use sparingly for sticky nav or overlay elements: backdrop-blur-xl bg-white/5 border-b border-white/10."
+  },
+  "layouts": {
+    "hero": "Full-screen cinematic entrance. Background fades in, particle sphere appears, headline reveals line-by-line via framer-motion stagger. Minimal top-left wordmark, top-right nav items.",
+    "sections": "Continuous journey with no hard cuts. Use large vertical padding (py-32 or py-48) to create massive negative space.",
+    "statement": "Large editorial statement section with scroll-driven word-by-word or line-by-line reveals using framer-motion useScroll.",
+    "focus_areas": "Large horizontal typography rows (e.g., 01 ARTIFICIAL INTELLIGENCE) spanning full width. Hover triggers expansion, text glow, and subtle image reveal.",
+    "portfolio": "Large editorial gallery rows with cursor-following visual reveals (scale 0.7->1, blur-to-sharp).",
+    "team": "Editorial numbered list. Hovering over a name reveals a grayscale portrait following the cursor.",
+    "insights": "Editorial journal rows with minimal metadata (Date, Category, Title). Hover brightness/tracking animations."
+  },
+  "motion": {
+    "timing": {
+      "micro": "300-500ms ease-out",
+      "text_reveal": "600-1000ms cubic-bezier(0.16, 1, 0.3, 1)",
+      "large_transitions": "1000-1800ms cubic-bezier(0.22, 1, 0.36, 1)",
+      "hero_entrance": "1500-2500ms cubic-bezier(0.16, 1, 0.3, 1)"
+    },
+    "scroll": "Lenis for smooth momentum scrolling. Important: setup LenisContext with ReactLenis component.",
+    "interactions": "Hover tracking expansion (letter-spacing), opacity shifts (50% to 100%), scale transitions."
+  },
+  "components_instructions": {
+    "ParticleSphere": "Create a React Three Fiber component with a Canvas. Use points and a custom vertex/fragment shader (or simple useFrame manipulation of position array) to form a sphere. Apply a golden color. On useFrame, rotate the sphere slowly. Use mouse coordinates (state.mouse) to apply gravitational displacement (repulsion/attraction) to the vertices. Emit 'glitter' particles that move outward from the center.",
+    "CustomCursor": "Fixed framer-motion div that tracks window mouse coordinates. Use a context or global state to determine if hovering over an interactive element to expand the cursor and show text.",
+    "EditorialRow": "A flex row with border-b border-white/10. Contains a number (01) and large text. On hover, change background slightly or reveal an image using an absolute positioned framer-motion div that follows the local mouse position.",
+    "ScrollRevealText": "Split text into lines. Use framer-motion whileInView or useScroll to translate Y and fade in each line sequentially."
+  },
+  "media": {
+    "images": {
+      "portfolio_abstract": [
+        {
+          "url": "https://images.unsplash.com/photo-1633164442172-dc4147f21954?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzF8MHwxfHNlYXJjaHw0fHxhYnN0cmFjdCUyMGdlbmVyYXRpdmUlMjBhcnQlMjAzZHxlbnwwfHx8fDE3ODYzNjI2MzJ8MA&ixlib=rb-4.1.0&q=85",
+          "description": "Red and blue waves"
+        },
+        {
+          "url": "https://images.pexels.com/photos/12537427/pexels-photo-12537427.jpeg",
+          "description": "High-tech abstract blue/teal circuits"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1670509624628-bbe8efe126a1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzF8MHwxfHNlYXJjaHwzfHxhYnN0cmFjdCUyMGdlbmVyYXRpdmUlMjBhcnQlMjAzZHxlbnwwfHx8fDE3ODYzNjI2MzJ8MA&ixlib=rb-4.1.0&q=85",
+          "description": "Blue abstract dark"
+        }
+      ],
+      "team_portraits": [
+        {
+          "url": "https://images.unsplash.com/photo-1764545973653-94c40d993495?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODd8MHwxfHNlYXJjaHw0fHxwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdCUyMGRhcmslMjBiYWNrZ3JvdW5kfGVufDB8fHx8MTc4NjE5NDU3OXww&ixlib=rb-4.1.0&q=85",
+          "description": "Man portrait dark background"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1770894807442-108cc33c0a7a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODd8MHwxfHNlYXJjaHwyfHxwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdCUyMGRhcmslMjBiYWNrZ3JvdW5kfGVufDB8fHx8MTc4NjE5NDU3OXww&ixlib=rb-4.1.0&q=85",
+          "description": "Young man portrait dark background"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1758600587730-a11917c13b85?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODd8MHwxfHNlYXJjaHwzfHxwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdCUyMGRhcmslMjBiYWNrZ3JvdW5kfGVufDB8fHx8MTc4NjE5NDU3OXww&ixlib=rb-4.1.0&q=85",
+          "description": "Woman portrait dark background"
+        }
+      ]
+    }
+  },
+  "3d_libraries": [
+    "three",
+    "@react-three/fiber",
+    "@react-three/drei",
+    "framer-motion",
+    "lenis",
+    "lucide-react"
+  ],
+  "accessibility": {
+    "prefers_reduced_motion": "Respect prefers-reduced-motion for large transitions. Disable particle system or simplify interactions if enabled.",
+    "testing": "All interactive elements (nav links, rows, buttons) MUST include a data-testid attribute in kebab-case."
+  },
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": "1. Do not use standard centered, generic layouts. Embrace asymmetry and large negative space. 2. Implement a high-end, smooth scrolling experience using 'lenis' package (`<ReactLenis root>`). 3. Ensure deep dark mode aesthetics (#050508) without flat grey sections. 4. Never use 'Inter' for headings. 5. Include data-testid on all interactive elements. 6. Build the signature 3D Golden Particle Sphere in the hero section using @react-three/fiber. 7. Do not use generic Shadcn cards for the main marketing layouts; use custom HTML/Tailwind to allow massive typography and strict lines."
+}
