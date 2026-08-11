@@ -187,7 +187,7 @@ void main() {
   float d = length(vUv - 0.5) * 2.0;
   float a = smoothstep(1.0, 0.0, d);
   a *= a;
-  gl_FragColor = vec4(vec3(1.0, 0.78, 0.38), a * 0.24 * uFade * (1.0 + uCrack * 2.0));
+  gl_FragColor = vec4(vec3(0.85, 0.88, 0.95), a * 0.1 * uFade * (1.0 + uCrack * 1.2));
 }
 `;
 
