@@ -407,7 +407,7 @@ export default function CrystalSphere() {
     const lineGeo = new THREE.BufferGeometry();
     lineGeo.setAttribute("position", new THREE.BufferAttribute(linePos, 3));
     const lineMat = new THREE.LineBasicMaterial({
-      color: 0xffd76a,
+      color: 0xdfe6f2,
       transparent: true,
       opacity: 0,
       blending: THREE.AdditiveBlending,
@@ -478,7 +478,7 @@ export default function CrystalSphere() {
       shared.uCrack.value = cur.crack;
       innerMat.uniforms.uSwirl.value = 0.06 * (1 + cur.crack * 3);
       glow.scale.setScalar(1 + cur.crack * 0.8);
-      lineMat.opacity = cur.net * cur.fade * 0.2;
+      lineMat.opacity = cur.net * cur.fade * 0.16;
 
       rotY += 0.0009;
       group.rotation.y += (rotY + ndc.x * 0.4 - group.rotation.y) * 0.05;
