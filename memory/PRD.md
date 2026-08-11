@@ -16,7 +16,7 @@ Build a premium, immersive website prototype with a design language very close t
 ## Core Requirements (static)
 - Immersive near-black golden-particle universe; cinematic hero entrance; scroll-as-journey with the sphere evolving per section; typographic editorial sections; custom cursor; hover reveals following cursor; mobile redesign; performance + prefers-reduced-motion support; working contact form; verified company legal details in footer.
 
-- Glitter restyle (user request): particles now much tinier and in white/silver diamond-dust tones (denser counts to compensate), golden glass rim + glow kept as brand accent.
+- Glitter restyle (user request): particles now much tinier and in white/silver diamond-dust tones (denser counts to compensate). Golden glass rim removed — sphere is now a borderless cloud of fine silver glitter.
 
 ## Implemented (2026-08-10, iteration 4)
 - Sphere Finale: contact/footer scroll drives uCrack — glowing jagged fissures spread across the glass shell, the shell dissolves, inner star-dust bursts outward, glitter rain accelerates and spreads wider, floor glow pool swells. Sphere reforms intact before the crack for narrative contrast.

@@ -261,31 +261,6 @@ export default function CrystalSphere() {
       uCrack: { value: 0 },
     };
 
-    const glassGeo = new THREE.SphereGeometry(R, 72, 48);
-    const glassMat = new THREE.ShaderMaterial({
-      vertexShader: GLASS_VERT,
-      fragmentShader: GLASS_FRAG,
-      uniforms: { uRim: { value: col("#ffcf6a") }, uTint: { value: col("#3f6dff") }, uFade: shared.uFade, uTime: shared.uTime, uCrack: shared.uCrack },
-      transparent: true,
-      depthWrite: false,
-      blending: THREE.AdditiveBlending,
-      side: THREE.FrontSide,
-    });
-    group.add(new THREE.Mesh(glassGeo, glassMat));
-
-    const glassBackMat = new THREE.ShaderMaterial({
-      vertexShader: GLASS_VERT,
-      fragmentShader: GLASS_FRAG,
-      uniforms: { uRim: { value: col("#7fa8ff") }, uTint: { value: col("#ffb84d") }, uFade: shared.uFade, uTime: shared.uTime, uCrack: shared.uCrack },
-      transparent: true,
-      depthWrite: false,
-      blending: THREE.AdditiveBlending,
-      side: THREE.BackSide,
-    });
-    const backMesh = new THREE.Mesh(glassGeo, glassBackMat);
-    backMesh.scale.setScalar(0.985);
-    group.add(backMesh);
-
     const mkPtsGeo = (n, fill) => {
       const pos = new Float32Array(n * 3);
       const dir = new Float32Array(n * 3);
@@ -532,7 +507,6 @@ export default function CrystalSphere() {
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("resize", onResize);
       renderer.dispose();
-      glassGeo.dispose();
       innerGeo.dispose();
       rainGeo.dispose();
       glowGeo.dispose();
