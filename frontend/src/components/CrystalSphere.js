@@ -280,19 +280,6 @@ export default function CrystalSphere() {
     });
     group.add(new THREE.Mesh(glassGeo, glassMat));
 
-    const glassBackMat = new THREE.ShaderMaterial({
-      vertexShader: GLASS_VERT,
-      fragmentShader: GLASS_FRAG,
-      uniforms: { uRim: { value: col("#aebbd0") }, uTint: { value: col("#e6eaf2") }, uFade: shared.uFade, uTime: shared.uTime, uCrack: shared.uCrack },
-      transparent: true,
-      depthWrite: false,
-      blending: THREE.AdditiveBlending,
-      side: THREE.BackSide,
-    });
-    const backMesh = new THREE.Mesh(glassGeo, glassBackMat);
-    backMesh.scale.setScalar(0.985);
-    group.add(backMesh);
-
     const mkPtsGeo = (n, fill) => {
       const pos = new Float32Array(n * 3);
       const dir = new Float32Array(n * 3);
