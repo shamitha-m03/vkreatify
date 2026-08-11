@@ -18,6 +18,7 @@ uniform vec3 uRim;
 uniform vec3 uTint;
 uniform float uFade;
 uniform float uTime;
+uniform float uCrack;
 varying vec3 vN;
 varying vec3 vV;
 void main() {
@@ -25,9 +26,15 @@ void main() {
   float rim = pow(1.0 - f, 2.6);
   float rimHot = pow(1.0 - f, 6.5);
   float shimmer = 0.85 + 0.15 * sin(uTime * 0.7 + vN.y * 6.0);
+  float n1 = sin(vN.x * 9.0 + vN.y * 15.0) * sin(vN.z * 11.0 - vN.y * 7.0);
+  float n2 = sin(vN.x * 17.0 - vN.z * 13.0) * sin(vN.y * 21.0 + 2.0);
+  float crackLine = clamp(smoothstep(0.08, 0.0, abs(n1)) + smoothstep(0.08, 0.0, abs(n2)), 0.0, 1.0);
+  float flareV = smoothstep(0.05, 0.4, uCrack) * (1.0 - smoothstep(0.55, 0.95, uCrack));
   vec3 col = uRim * rim * 1.1 * shimmer + uRim * rimHot * 1.7 + uTint * pow(1.0 - f, 4.0) * 0.4;
   col += uTint * 0.02;
-  float a = (rim * 0.7 + rimHot * 0.9 + 0.03) * uFade;
+  col += vec3(1.0, 1.0, 1.0) * crackLine * flareV * 1.7;
+  float shellFade = 1.0 - smoothstep(0.55, 1.0, uCrack);
+  float a = (rim * 0.7 + rimHot * 0.9 + 0.03) * uFade * shellFade + crackLine * flareV * 0.85 * uFade;
   gl_FragColor = vec4(col, a);
 }
 `;
@@ -260,6 +267,31 @@ export default function CrystalSphere() {
       uPx: { value: renderer.getPixelRatio() },
       uCrack: { value: 0 },
     };
+
+    const glassGeo = new THREE.SphereGeometry(R, 72, 48);
+    const glassMat = new THREE.ShaderMaterial({
+      vertexShader: GLASS_VERT,
+      fragmentShader: GLASS_FRAG,
+      uniforms: { uRim: { value: col("#eef2f8") }, uTint: { value: col("#c8d2e0") }, uFade: shared.uFade, uTime: shared.uTime, uCrack: shared.uCrack },
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      side: THREE.FrontSide,
+    });
+    group.add(new THREE.Mesh(glassGeo, glassMat));
+
+    const glassBackMat = new THREE.ShaderMaterial({
+      vertexShader: GLASS_VERT,
+      fragmentShader: GLASS_FRAG,
+      uniforms: { uRim: { value: col("#aebbd0") }, uTint: { value: col("#e6eaf2") }, uFade: shared.uFade, uTime: shared.uTime, uCrack: shared.uCrack },
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      side: THREE.BackSide,
+    });
+    const backMesh = new THREE.Mesh(glassGeo, glassBackMat);
+    backMesh.scale.setScalar(0.985);
+    group.add(backMesh);
 
     const mkPtsGeo = (n, fill) => {
       const pos = new Float32Array(n * 3);
@@ -507,6 +539,7 @@ export default function CrystalSphere() {
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("resize", onResize);
       renderer.dispose();
+      glassGeo.dispose();
       innerGeo.dispose();
       rainGeo.dispose();
       glowGeo.dispose();
