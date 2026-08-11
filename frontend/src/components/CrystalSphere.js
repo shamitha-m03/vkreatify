@@ -23,8 +23,8 @@ varying vec3 vN;
 varying vec3 vV;
 void main() {
   float f = abs(dot(normalize(vN), normalize(vV)));
-  float rim = pow(1.0 - f, 2.6);
-  float rimHot = pow(1.0 - f, 6.5);
+  float rim = pow(1.0 - f, 5.0);
+  float rimHot = pow(1.0 - f, 12.0);
   float shimmer = 0.85 + 0.15 * sin(uTime * 0.7 + vN.y * 6.0);
   float n1 = sin(vN.x * 9.0 + vN.y * 15.0) * sin(vN.z * 11.0 - vN.y * 7.0);
   float n2 = sin(vN.x * 17.0 - vN.z * 13.0) * sin(vN.y * 21.0 + 2.0);
@@ -34,7 +34,7 @@ void main() {
   col += uTint * 0.02;
   col += vec3(1.0, 1.0, 1.0) * crackLine * flareV * 1.7;
   float shellFade = 1.0 - smoothstep(0.55, 1.0, uCrack);
-  float a = (rim * 0.7 + rimHot * 0.9 + 0.03) * uFade * shellFade + crackLine * flareV * 0.85 * uFade;
+  float a = (rim * 0.55 + rimHot * 0.9 + 0.03) * uFade * shellFade + crackLine * flareV * 0.85 * uFade;
   gl_FragColor = vec4(col, a);
 }
 `;
