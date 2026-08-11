@@ -165,7 +165,7 @@ void main() {
   float a = disc * (1.0 - vFlare * 0.35) + star * vFlare;
   a *= vAlpha;
   if (a < 0.012) discard;
-  vec3 col = mix(vCol, vec3(1.0, 0.98, 0.9), core * 0.7);
+  vec3 col = mix(vCol, vec3(1.0, 1.0, 1.0), core * 0.7);
   gl_FragColor = vec4(col, a);
 }
 `;
@@ -191,8 +191,8 @@ void main() {
 }
 `;
 
-const GOLDS = ["#ffd76a", "#ffb84d", "#ff9d2e", "#fff2c9", "#ffc95e"];
-const BLUES = ["#9cc8ff", "#6e8cff", "#bfe0ff", "#7fb2ff"];
+const WHITES = ["#ffffff", "#f4f6fa", "#e6eaf2", "#eef1f7", "#f9fbff"];
+const SILVERS = ["#c8d2e0", "#aeb9cc", "#dfe6f2", "#bcc7d9"];
 
 const ANCHORS = [
   { p: 0.0, x: 0.55, y: 0.0, z: 0.0, s: 1.0, spread: 0.0, net: 0.0, fade: 1.0, crack: 0.0 },
@@ -234,8 +234,8 @@ export default function CrystalSphere() {
     const low =
       window.innerWidth < 768 ||
       new URLSearchParams(window.location.search).has("lowfx");
-    const INNER = low ? 1800 : 3800;
-    const RAIN = low ? 1100 : 2600;
+    const INNER = low ? 2600 : 5200;
+    const RAIN = low ? 1500 : 3400;
     const DUST = low ? 220 : 520;
     const LINES = low ? 240 : 520;
     const R = 1.55;
@@ -336,13 +336,13 @@ export default function CrystalSphere() {
       pos[i * 3] = dx * rr;
       pos[i * 3 + 1] = dy * rr;
       pos[i * 3 + 2] = dz * rr;
-      const gold = Math.random() < 0.68;
+      const gold = Math.random() < 0.75;
       const flare = Math.random() < 0.28 ? 1 : 0;
       return {
-        size: flare ? 3.0 + Math.random() * 2.8 : 1.4 + Math.random() * 2.6,
+        size: flare ? 1.8 + Math.random() * 1.6 : 0.7 + Math.random() * 1.3,
         seed: Math.random(),
         flare,
-        color: gold ? pick(GOLDS) : pick(BLUES),
+        color: gold ? pick(WHITES) : pick(SILVERS),
       };
     });
     const innerMat = new THREE.ShaderMaterial({
@@ -377,12 +377,12 @@ export default function CrystalSphere() {
         dir[i * 3 + 1] = dyn + (Math.random() - 0.5) * 0.55;
         dir[i * 3 + 2] = dz + (Math.random() - 0.5) * 0.55;
       }
-      const gold = Math.random() < 0.78;
+      const gold = Math.random() < 0.8;
       return {
-        size: 1.2 + Math.random() * 2.4,
+        size: 0.6 + Math.random() * 1.2,
         seed: Math.random(),
         flare: Math.random() < 0.34 ? 1 : 0,
-        color: gold ? pick(GOLDS) : pick(BLUES),
+        color: gold ? pick(WHITES) : pick(SILVERS),
         speed: 0.07 + Math.random() * 0.15,
         mode: rain ? 1 : 0,
         len: 1.1 + Math.random() * 2.4,
@@ -445,10 +445,10 @@ export default function CrystalSphere() {
       pos[i * 3 + 1] = (Math.random() - 0.5) * 9;
       pos[i * 3 + 2] = (Math.random() - 0.5) * 6 - 1;
       return {
-        size: 2.5 + Math.random() * 7.0,
+        size: 1.5 + Math.random() * 4.0,
         seed: Math.random(),
         flare: Math.random() < 0.15 ? 1 : 0,
-        color: Math.random() < 0.6 ? pick(BLUES) : pick(GOLDS),
+        color: Math.random() < 0.6 ? pick(SILVERS) : pick(WHITES),
       };
     });
     const dustMat = new THREE.ShaderMaterial({
