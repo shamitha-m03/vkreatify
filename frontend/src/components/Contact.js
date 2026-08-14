@@ -8,7 +8,7 @@ const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const EASE = [0.16, 1, 0.3, 1];
 
 const inputCls =
-  "w-full bg-transparent border-b border-white/15 focus:border-[#ffd76a]/70 outline-none py-3.5 text-sm text-white placeholder:text-white/25 transition-colors duration-500";
+  "w-full bg-transparent border-b border-white/15 focus:border-[#ffd76a]/70 outline-none py-3.5 text-sm text-white font-semibold placeholder:text-white placeholder:font-semibold transition-colors duration-500";
 
 export default function Contact() {
   const { t } = useLang();
@@ -71,32 +71,32 @@ export default function Contact() {
           transition={{ duration: 0.9, ease: EASE }}
           className="lg:col-span-4 space-y-10"
         >
-          <p className="text-sm leading-relaxed text-white/55 max-w-xs">
+          <p className="text-sm leading-relaxed text-white font-semibold max-w-xs">
             {c.para}
           </p>
           <div className="space-y-6 font-mono-x text-xs">
             <div>
-              <p className="text-white/30 tracking-[0.3em] uppercase mb-1.5">{c.instagramLabel}</p>
+              <p className="text-white tracking-[0.3em] uppercase mb-1.5 font-semibold">{c.instagramLabel}</p>
               <a
                 data-testid="contact-instagram-link"
                 data-cursor="link"
                 href="https://instagram.com/vkreatify.digital"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#ffd76a] hover:text-white transition-colors duration-500"
+                className="text-[#ffd76a] hover:text-white transition-colors duration-500 font-semibold"
               >
                 @vkreatify.digital
               </a>
             </div>
             <div>
-              <p className="text-white/30 tracking-[0.3em] uppercase mb-1.5">{c.studioLabel}</p>
-              <p className="text-white/60 leading-relaxed">
+              <p className="text-white tracking-[0.3em] uppercase mb-1.5 font-semibold">{c.studioLabel}</p>
+              <p className="text-white leading-relaxed font-semibold">
                 Balaji Nagar, Coimbatore South<br />Tamil Nadu — 641044, India
               </p>
             </div>
             <div>
-              <p className="text-white/30 tracking-[0.3em] uppercase mb-1.5">{c.contactLabel}</p>
-              <p className="text-white/60">{c.contactValue}</p>
+              <p className="text-white tracking-[0.3em] uppercase mb-1.5 font-semibold">{c.contactLabel}</p>
+              <p className="text-white font-semibold">{c.contactValue}</p>
             </div>
           </div>
         </motion.div>
@@ -114,13 +114,13 @@ export default function Contact() {
           <input data-testid="contact-input-company" placeholder={f.company} value={form.company} onChange={set("company")} className={inputCls} />
           <input data-testid="contact-input-phone" placeholder={f.phone} value={form.phone} onChange={set("phone")} className={inputCls} />
           <input data-testid="contact-input-email" required type="email" placeholder={f.email} value={form.email} onChange={set("email")} className={inputCls} />
-          <select data-testid="contact-select-service" required value={form.service} onChange={set("service")} className={`${inputCls} ${form.service ? "" : "text-white/25"} [&>option]:bg-[#0a0a0e]`}>
+          <select data-testid="contact-select-service" required value={form.service} onChange={set("service")} className={`${inputCls} ${form.service ? "" : "text-white font-semibold"} [&>option]:bg-[#0a0a0e]`}>
             <option value="" disabled>{f.service}</option>
             {f.services.map((s) => (
               <option key={s}>{s}</option>
             ))}
           </select>
-          <select data-testid="contact-select-budget" value={form.budget} onChange={set("budget")} className={`${inputCls} ${form.budget ? "" : "text-white/25"} [&>option]:bg-[#0a0a0e]`}>
+          <select data-testid="contact-select-budget" value={form.budget} onChange={set("budget")} className={`${inputCls} ${form.budget ? "" : "text-white font-semibold"} [&>option]:bg-[#0a0a0e]`}>
             <option value="" disabled>{f.budget}</option>
             {f.budgets.map((b) => (
               <option key={b}>{b}</option>

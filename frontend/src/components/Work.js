@@ -3,6 +3,7 @@ import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motio
 import { ArrowUpRight } from "lucide-react";
 import { useLang } from "@/i18n";
 import CaseStudy from "@/components/CaseStudy";
+import ReelsIcon from "@/components/ReelsIcon";
 
 export default function Work() {
   const { t } = useLang();
@@ -51,44 +52,57 @@ export default function Work() {
       </p>
 
       <div className="border-t border-white/10 relative">
-        {items.map((item, i) => (
-          <motion.div
-            key={item.name}
-            data-testid={`work-row-${i}`}
-            data-cursor="open"
-            data-cursor-label="OPEN"
-            role="button"
-            tabIndex={0}
-            onClick={() => openCase(i)}
-            onKeyDown={(e) => e.key === "Enter" && openCase(i)}
-            onMouseEnter={() => setActive(i)}
-            onMouseLeave={() => setActive(null)}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.8, delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
-            className="group border-b border-white/10 py-7 sm:py-10 px-2 sm:px-6"
-          >
-            <div className="flex items-baseline gap-4 sm:gap-8">
-              <h3 className="font-display font-medium uppercase tracking-tight leading-none text-[clamp(1.5rem,4.2vw,3.6rem)] text-white/70 group-hover:text-white group-hover:translate-x-4 transition-all duration-700 ease-out-expo">
-                {item.name}
-              </h3>
-              <ArrowUpRight
-                size={24}
-                strokeWidth={1.25}
-                className="self-center text-white/20 group-hover:text-[#ffd76a] group-hover:translate-x-1.5 group-hover:-translate-y-1.5 transition-all duration-500"
-              />
-              <div className="ml-auto text-right hidden sm:block">
-                <p className="font-grotesk text-[11px] tracking-[0.2em] uppercase text-white/45 group-hover:text-white/75 transition-colors duration-500">
-                  {item.cat}
-                </p>
-                <p className="font-mono-x text-[10px] text-white/25 mt-1">
-                  {item.industry} — {item.year}
-                </p>
+        {items.map((item, i) => {
+          const hasReels = (item.cat || "").toLowerCase().includes("reel") || (item.scope || "").toLowerCase().includes("reel");
+          return (
+            <motion.div
+              key={item.name}
+              data-testid={`work-row-${i}`}
+              data-cursor="open"
+              data-cursor-label="OPEN"
+              role="button"
+              tabIndex={0}
+              onClick={() => openCase(i)}
+              onKeyDown={(e) => e.key === "Enter" && openCase(i)}
+              onMouseEnter={() => setActive(i)}
+              onMouseLeave={() => setActive(null)}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.8, delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
+              className="group border-b border-white/10 py-7 sm:py-10 px-2 sm:px-6"
+            >
+              <div className="flex items-center gap-4 sm:gap-8">
+                <div className="flex items-center gap-3">
+                  <h3 className="font-display font-medium uppercase tracking-tight leading-none text-[clamp(1.5rem,4.2vw,3.6rem)] text-white/70 group-hover:text-white group-hover:translate-x-4 transition-all duration-700 ease-out-expo">
+                    {item.name}
+                  </h3>
+                  {hasReels && (
+                    <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#ffd76a]/10 border border-[#ffd76a]/25 group-hover:bg-[#ffd76a]/20 group-hover:border-[#ffd76a]/50 transition-all duration-500">
+                      <ReelsIcon size={16} color="#ffd76a" />
+                      <span className="font-mono-x text-[8px] tracking-widest text-[#ffd76a] uppercase hidden md:inline-block">
+                        REELS
+                      </span>
+                    </span>
+                  )}
+                </div>
+                <ArrowUpRight
+                  size={24}
+                  strokeWidth={1.25}
+                  className="self-center text-white/20 group-hover:text-[#ffd76a] group-hover:translate-x-1.5 group-hover:-translate-y-1.5 transition-all duration-500"
+                />
+                <div className="ml-auto text-right hidden sm:block">
+                  <p className="font-grotesk text-[11px] tracking-[0.2em] uppercase text-white/45 group-hover:text-white/75 transition-colors duration-500">
+                    {item.cat}
+                  </p>
+                  <p className="font-mono-x text-[10px] text-white/25 mt-1">
+                    {item.industry} — {item.year}
+                  </p>
+                </div>
               </div>
-            </div>
-          </motion.div>
-        ))}
+            </motion.div>
+          );
+        })}
 
         <AnimatePresence>
           {active !== null && selected === null && (

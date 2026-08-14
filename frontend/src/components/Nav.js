@@ -7,23 +7,44 @@ const IDS = ["about", "services", "work", "process", "insights", "contact"];
 
 export default function Nav() {
   const { t, lang, setLang } = useLang();
-  const LINKS = IDS.map((id) => ({ id, label: t(`nav.${id}`) }));
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("");
 
+  const LINKS = IDS.map((id) => ({ id, label: t(`nav.${id}`) }));
+
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 60);
+      
+      // Find the section that is currently most visible in the viewport
       let current = "";
-      for (const l of LINKS) {
-        const el = document.getElementById(l.id);
-        if (el && el.getBoundingClientRect().top < window.innerHeight * 0.5) {
-          current = l.id;
+      let closestDistance = Infinity;
+      
+      for (const id of IDS) {
+        const el = document.getElementById(id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          const viewportCenter = window.innerHeight / 2;
+          
+          // Check if section is in viewport
+          if (rect.top < window.innerHeight && rect.bottom > 0) {
+            // Calculate distance from section top to viewport center
+            const distance = Math.abs(rect.top - viewportCenter);
+            
+            // If this section is closer to center than previous, make it active
+            if (distance < closestDistance) {
+              closestDistance = distance;
+              current = id;
+            }
+          }
         }
       }
+      
       setActive(current);
     };
+    
+    onScroll(); // Call once on mount
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);

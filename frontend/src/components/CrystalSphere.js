@@ -26,15 +26,10 @@ void main() {
   float rim = pow(1.0 - f, 5.0);
   float rimHot = pow(1.0 - f, 12.0);
   float shimmer = 0.85 + 0.15 * sin(uTime * 0.7 + vN.y * 6.0);
-  float n1 = sin(vN.x * 9.0 + vN.y * 15.0) * sin(vN.z * 11.0 - vN.y * 7.0);
-  float n2 = sin(vN.x * 17.0 - vN.z * 13.0) * sin(vN.y * 21.0 + 2.0);
-  float crackLine = clamp(smoothstep(0.08, 0.0, abs(n1)) + smoothstep(0.08, 0.0, abs(n2)), 0.0, 1.0);
-  float flareV = smoothstep(0.05, 0.4, uCrack) * (1.0 - smoothstep(0.55, 0.95, uCrack));
   vec3 col = uRim * rim * 1.1 * shimmer + uRim * rimHot * 1.7 + uTint * pow(1.0 - f, 4.0) * 0.4;
   col += uTint * 0.02;
-  col += vec3(1.0, 1.0, 1.0) * crackLine * flareV * 1.7;
   float shellFade = 1.0 - smoothstep(0.55, 1.0, uCrack);
-  float a = (rim * 0.55 + rimHot * 0.9 + 0.03) * uFade * shellFade + crackLine * flareV * 0.85 * uFade;
+  float a = (rim * 0.55 + rimHot * 0.9 + 0.03) * uFade * shellFade;
   gl_FragColor = vec4(col, a);
 }
 `;
@@ -232,8 +227,117 @@ function sample(p) {
 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 const col = (hex) => new THREE.Color(hex);
 
+function computeReelsTarget(x, y, z, R) {
+  const len = Math.sqrt(x * x + y * y + z * z) || 1;
+  const nx = x / len;
+  const ny = y / len;
+  const nz = z / len;
+
+  const BW = 1.05; // half width (total 2.10)
+  const BH = 1.05; // half height (total 2.10)
+  const BD = 0.22; // half depth
+
+  // Superquadric box mapping for smooth rounded square frame
+  const p = 5.5;
+  const dx = Math.abs(nx) / BW;
+  const dy = Math.abs(ny) / BH;
+  const dz = Math.abs(nz) / BD;
+  const norm = Math.pow(Math.pow(dx, p) + Math.pow(dy, p) + Math.pow(dz, p), 1.0 / p) || 1;
+
+  let bx = nx / norm;
+  let by = ny / norm;
+  let bz = nz / norm;
+
+  return [bx, by, bz];
+}
+
+function computeReelsParticleTarget(i, N, origX, origY, origZ, R) {
+  const fraction = i / N;
+  const BW = 1.02;
+  const BH = 1.02;
+
+  if (fraction < 0.35) {
+    // 1. PLAY BUTTON ▶ (Dense 3D Play Triangle)
+    const tFrac = fraction / 0.35;
+    const r1 = Math.sqrt((tFrac * 17.31 + Math.abs(origX) * 5.1) % 1);
+    const r2 = ((tFrac * 31.73 + Math.abs(origY) * 7.3) % 1);
+
+    const xA = -0.26, yA = -0.34;
+    const xB = -0.26, yB = 0.34;
+    const xC = 0.40, yC = 0.0;
+
+    const wA = 1 - r1;
+    const wB = r1 * (1 - r2);
+    const wC = r1 * r2;
+
+    const px = wA * xA + wB * xB + wC * xC;
+    const py = wA * yA + wB * yB + wC * yC;
+    const pz = 0.24 + 0.20 * (1.0 - r1 * 0.4);
+
+    return [px, py, pz];
+  } else if (fraction < 0.55) {
+    // 2. TWO DIAGONAL HEADER STRIPES
+    const hFrac = (fraction - 0.35) / 0.20;
+    const stripeId = Math.floor(hFrac * 2);
+    const sub = (hFrac * 2) % 1;
+
+    const startX = stripeId === 0 ? -0.55 : 0.05;
+    const py = 0.38 + 0.54 * sub;
+    const px = startX + (py - 0.38) * 0.65 + (Math.random() - 0.5) * 0.12;
+    const pz = 0.24;
+    return [px, py, pz];
+  } else if (fraction < 0.68) {
+    // 3. HORIZONTAL DIVIDER SEAM LINE
+    const sFrac = (fraction - 0.55) / 0.13;
+    const px = -1.02 + 2.04 * sFrac;
+    const py = 0.38;
+    const pz = 0.22;
+    return [px, py, pz];
+  } else {
+    // 4. OUTER SQUIRCLE BORDER
+    const oFrac = (fraction - 0.68) / 0.32;
+    const angle = oFrac * Math.PI * 2;
+    const cosA = Math.cos(angle);
+    const sinA = Math.sin(angle);
+    const p = 5.0;
+    const dx = Math.abs(cosA) / BW;
+    const dy = Math.abs(sinA) / BH;
+    const norm = Math.pow(Math.pow(dx, p) + Math.pow(dy, p), 1.0 / p) || 1;
+    const px = cosA / norm;
+    const py = sinA / norm;
+    const pz = (Math.random() - 0.5) * 0.20;
+    return [px, py, pz];
+  }
+}
+
+
 export default function CrystalSphere() {
   const mountRef = useRef(null);
+  const isCameraModeRef = useRef(false);
+
+  useEffect(() => {
+    // Observer specifically for Services section
+    const servicesSection = document.getElementById("services");
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          isCameraModeRef.current = entry.isIntersecting && entry.intersectionRatio > 0.15;
+        });
+      },
+      { threshold: [0, 0.15, 0.3, 0.5, 0.7, 1] }
+    );
+
+    if (servicesSection) {
+      observer.observe(servicesSection);
+    }
+
+    return () => {
+      if (servicesSection) {
+        observer.unobserve(servicesSection);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -264,11 +368,27 @@ export default function CrystalSphere() {
       uMouse: { value: new THREE.Vector3(99, 99, 0) },
       uSpread: { value: 0 },
       uFade: { value: 0 },
+      uPtsFade: { value: 0 },
       uPx: { value: renderer.getPixelRatio() },
       uCrack: { value: 0 },
     };
 
     const glassGeo = new THREE.SphereGeometry(R, 72, 48);
+    const origGlassPos = new Float32Array(glassGeo.attributes.position.array);
+    const targetGlassPos = new Float32Array(origGlassPos.length);
+
+    for (let i = 0; i < origGlassPos.length; i += 3) {
+      const [cx, cy, cz] = computeReelsTarget(
+        origGlassPos[i],
+        origGlassPos[i + 1],
+        origGlassPos[i + 2],
+        R
+      );
+      targetGlassPos[i] = cx;
+      targetGlassPos[i + 1] = cy;
+      targetGlassPos[i + 2] = cz;
+    }
+
     const glassMat = new THREE.ShaderMaterial({
       vertexShader: GLASS_VERT,
       fragmentShader: GLASS_FRAG,
@@ -339,10 +459,28 @@ export default function CrystalSphere() {
         color: gold ? pick(WHITES) : pick(SILVERS),
       };
     });
+    const origInnerPos = new Float32Array(innerGeo.attributes.position.array);
+    const targetInnerPos = new Float32Array(origInnerPos.length);
+    const numInnerPts = origInnerPos.length / 3;
+    for (let i = 0; i < origInnerPos.length; i += 3) {
+      const pIdx = i / 3;
+      const [cx, cy, cz] = computeReelsParticleTarget(
+        pIdx,
+        numInnerPts,
+        origInnerPos[i],
+        origInnerPos[i + 1],
+        origInnerPos[i + 2],
+        R
+      );
+      targetInnerPos[i] = cx;
+      targetInnerPos[i + 1] = cy;
+      targetInnerPos[i + 2] = cz;
+    }
+
     const innerMat = new THREE.ShaderMaterial({
       vertexShader: PTS_VERT,
       fragmentShader: PTS_FRAG,
-      uniforms: { ...shared, uSwirl: { value: 0.06 } },
+      uniforms: { ...shared, uFade: shared.uPtsFade, uSwirl: { value: 0.06 } },
       transparent: true,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
@@ -385,7 +523,7 @@ export default function CrystalSphere() {
     const rainMat = new THREE.ShaderMaterial({
       vertexShader: RAIN_VERT,
       fragmentShader: PTS_FRAG,
-      uniforms: { ...shared },
+      uniforms: { ...shared, uFade: shared.uFade },
       transparent: true,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
@@ -423,6 +561,68 @@ export default function CrystalSphere() {
       linePos.set(shellPts.slice(a * 3, a * 3 + 3), i * 6);
       linePos.set(shellPts.slice(b * 3, b * 3 + 3), i * 6 + 3);
     }
+    const origLinePos = new Float32Array(linePos);
+    const targetLinePos = new Float32Array(origLinePos.length);
+    for (let i = 0; i < origLinePos.length; i += 6) {
+      const segIdx = i / 6;
+      if (segIdx < LINES * 0.30) {
+        // Pool 1: Outer Squircle Box border lines
+        const subT = segIdx / (LINES * 0.30);
+        const a1 = subT * Math.PI * 2;
+        const a2 = (subT + 0.04) * Math.PI * 2;
+        const BW = 1.05, BH = 1.05, p = 5.5;
+
+        const norm1 = Math.pow(Math.pow(Math.abs(Math.cos(a1))/BW, p) + Math.pow(Math.abs(Math.sin(a1))/BH, p), 1/p) || 1;
+        const norm2 = Math.pow(Math.pow(Math.abs(Math.cos(a2))/BW, p) + Math.pow(Math.abs(Math.sin(a2))/BH, p), 1/p) || 1;
+
+        targetLinePos[i] = Math.cos(a1) / norm1; targetLinePos[i + 1] = Math.sin(a1) / norm1; targetLinePos[i + 2] = 0.22;
+        targetLinePos[i + 3] = Math.cos(a2) / norm2; targetLinePos[i + 4] = Math.sin(a2) / norm2; targetLinePos[i + 5] = 0.22;
+      } else if (segIdx < LINES * 0.55) {
+        // Pool 2: Center Play Triangle ▶ outline stroke lines
+        const t = ((segIdx - LINES * 0.30) / (LINES * 0.25)) * 3;
+        const side = Math.floor(t) % 3;
+        const subT = t - Math.floor(t);
+        const xA = -0.26, yA = -0.34, zA = 0.26;
+        const xB = -0.26, yB = 0.34, zB = 0.26;
+        const xC = 0.40, yC = 0.0, zC = 0.26;
+
+        let p1, p2;
+        if (side === 0) { p1 = [xA, yA, zA]; p2 = [xB, yB, zB]; }
+        else if (side === 1) { p1 = [xB, yB, zB]; p2 = [xC, yC, zC]; }
+        else { p1 = [xC, yC, zC]; p2 = [xA, yA, zA]; }
+
+        targetLinePos[i] = p1[0] + (p2[0] - p1[0]) * subT;
+        targetLinePos[i + 1] = p1[1] + (p2[1] - p1[1]) * subT;
+        targetLinePos[i + 2] = p1[2] + (p2[2] - p1[2]) * subT;
+
+        const nextT = Math.min(1.0, subT + 0.2);
+        targetLinePos[i + 3] = p1[0] + (p2[0] - p1[0]) * nextT;
+        targetLinePos[i + 4] = p1[1] + (p2[1] - p1[1]) * nextT;
+        targetLinePos[i + 5] = p1[2] + (p2[2] - p1[2]) * nextT;
+      } else if (segIdx < LINES * 0.70) {
+        // Pool 3: Horizontal Header line
+        const subT = (segIdx - LINES * 0.55) / (LINES * 0.15);
+        const lx1 = -1.02 + 2.04 * subT;
+        const lx2 = Math.min(1.02, lx1 + 0.25);
+        targetLinePos[i] = lx1; targetLinePos[i + 1] = 0.38; targetLinePos[i + 2] = 0.24;
+        targetLinePos[i + 3] = lx2; targetLinePos[i + 4] = 0.38; targetLinePos[i + 5] = 0.24;
+      } else {
+        // Pool 4: Two Slanted Diagonal Header Stripes
+        const subT = (segIdx - LINES * 0.70) / (LINES * 0.30);
+        const stripeId = Math.floor(subT * 2);
+        const st = (subT * 2) % 1;
+
+        const startX = stripeId === 0 ? -0.55 : 0.05;
+        const y1 = 0.38 + 0.54 * st;
+        const y2 = Math.min(0.92, y1 + 0.15);
+        const x1 = startX + (y1 - 0.38) * 0.65;
+        const x2 = startX + (y2 - 0.38) * 0.65;
+
+        targetLinePos[i] = x1; targetLinePos[i + 1] = y1; targetLinePos[i + 2] = 0.25;
+        targetLinePos[i + 3] = x2; targetLinePos[i + 4] = y2; targetLinePos[i + 5] = 0.25;
+      }
+    }
+
     const lineGeo = new THREE.BufferGeometry();
     lineGeo.setAttribute("position", new THREE.BufferAttribute(linePos, 3));
     const lineMat = new THREE.LineBasicMaterial({
@@ -448,7 +648,7 @@ export default function CrystalSphere() {
     const dustMat = new THREE.ShaderMaterial({
       vertexShader: DUST_VERT,
       fragmentShader: PTS_FRAG,
-      uniforms: { ...shared },
+      uniforms: { ...shared, uFade: shared.uFade },
       transparent: true,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
@@ -472,6 +672,7 @@ export default function CrystalSphere() {
 
     const cur = { x: 0.55, y: 0, z: 0, s: 1, spread: 0, net: 0, fade: 0, crack: 0 };
     let rotY = 0;
+    let morphProgress = 0;
     let raf;
     const clock = new THREE.Clock();
     const tmp = new THREE.Vector3();
@@ -494,14 +695,58 @@ export default function CrystalSphere() {
       shared.uMouse.value.copy(mouseWorld);
       shared.uSpread.value = cur.spread;
       shared.uFade.value = cur.fade;
+      shared.uPtsFade.value = cur.fade;
       shared.uCrack.value = cur.crack;
       innerMat.uniforms.uSwirl.value = 0.06 * (1 + cur.crack * 3);
       glow.scale.setScalar(1 + cur.crack * 0.8);
-      lineMat.opacity = cur.net * cur.fade * 0.16;
+      // Sharp vector line stroke drawing for the reference Instagram Reels icon during morph
+      lineMat.opacity = Math.max(cur.net * cur.fade * 0.16 * (1.0 - morphProgress), morphProgress * cur.fade * 0.75);
+
+      // Morphing interpolation towards target (1.0 for Services section, 0.0 elsewhere)
+      const targetMorph = isCameraModeRef.current ? 1.0 : 0.0;
+      const prevMorph = morphProgress;
+      morphProgress += (targetMorph - morphProgress) * 0.045; // Smooth transition over ~1.5 - 2s
+
+      if (
+        Math.abs(morphProgress - prevMorph) > 0.0001 ||
+        (targetMorph === 1 && morphProgress < 0.999) ||
+        (targetMorph === 0 && morphProgress > 0.001)
+      ) {
+        // Update Glass Vertices
+        const posArr = glassGeo.attributes.position.array;
+        for (let i = 0; i < posArr.length; i += 3) {
+          posArr[i] = origGlassPos[i] + (targetGlassPos[i] - origGlassPos[i]) * morphProgress;
+          posArr[i + 1] = origGlassPos[i + 1] + (targetGlassPos[i + 1] - origGlassPos[i + 1]) * morphProgress;
+          posArr[i + 2] = origGlassPos[i + 2] + (targetGlassPos[i + 2] - origGlassPos[i + 2]) * morphProgress;
+        }
+        glassGeo.attributes.position.needsUpdate = true;
+        glassGeo.computeVertexNormals();
+
+        // Update Shell Line Vertices
+        const lPosArr = lineGeo.attributes.position.array;
+        for (let i = 0; i < lPosArr.length; i += 3) {
+          lPosArr[i] = origLinePos[i] + (targetLinePos[i] - origLinePos[i]) * morphProgress;
+          lPosArr[i + 1] = origLinePos[i + 1] + (targetLinePos[i + 1] - origLinePos[i + 1]) * morphProgress;
+          lPosArr[i + 2] = origLinePos[i + 2] + (targetLinePos[i + 2] - origLinePos[i + 2]) * morphProgress;
+        }
+        lineGeo.attributes.position.needsUpdate = true;
+
+        // Update Inner Glitter Particle Positions to fill the Reels icon volume
+        const inPosArr = innerGeo.attributes.position.array;
+        for (let i = 0; i < inPosArr.length; i += 3) {
+          inPosArr[i] = origInnerPos[i] + (targetInnerPos[i] - origInnerPos[i]) * morphProgress;
+          inPosArr[i + 1] = origInnerPos[i + 1] + (targetInnerPos[i + 1] - origInnerPos[i + 1]) * morphProgress;
+          inPosArr[i + 2] = origInnerPos[i + 2] + (targetInnerPos[i + 2] - origInnerPos[i + 2]) * morphProgress;
+        }
+        innerGeo.attributes.position.needsUpdate = true;
+      }
 
       rotY += 0.0009;
-      group.rotation.y += (rotY + ndc.x * 0.4 - group.rotation.y) * 0.05;
-      group.rotation.x += (ndc.y * -0.22 - group.rotation.x) * 0.05;
+      const targetRotY = (1 - morphProgress) * rotY + ndc.x * (0.4 * (1 - morphProgress) + 0.15 * morphProgress);
+      const targetRotX = (1 - morphProgress) * (ndc.y * -0.22) + ndc.y * -0.12 * morphProgress;
+
+      group.rotation.y += (targetRotY - group.rotation.y) * 0.06;
+      group.rotation.x += (targetRotX - group.rotation.x) * 0.06;
       group.position.set(cur.x, cur.y, cur.z);
       group.scale.setScalar(cur.s);
 
@@ -538,7 +783,9 @@ export default function CrystalSphere() {
 
   useEffect(() => {
     const t = setTimeout(() => {
-      if (mountRef.current) mountRef.current.style.opacity = "1";
+      if (mountRef.current) {
+        mountRef.current.style.opacity = "1";
+      }
     }, 150);
     return () => clearTimeout(t);
   }, []);

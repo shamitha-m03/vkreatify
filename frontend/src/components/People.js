@@ -3,9 +3,9 @@ import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motio
 import { useLang } from "@/i18n";
 
 const IMGS = [
-  "https://images.unsplash.com/photo-1764545973653-94c40d993495?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODd8MHwxfHNlYXJjaHw0fHxwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdCUyMGRhcmslMjBiYWNrZ3JvdW5kfGVufDB8fHx8MTc4NjE5NDU3OXww&ixlib=rb-4.1.0&q=85",
+  "https://pbs.twimg.com/profile_images/1285763859689570304/wOLZYsbT_400x400.jpg",
   "https://images.unsplash.com/photo-1770894807442-108cc33c0a7a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODd8MHwxfHNlYXJjaHwyfHxwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdCUyMGRhcmslMjBiYWNrZ3JvdW5kfGVufDB8fHx8MTc4NjE5NDU3OXww&ixlib=rb-4.1.0&q=85",
-  "https://images.unsplash.com/photo-1758600587730-a11917c13b85?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODd8MHwxfHNlYXJjaHwzfHxwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdCUyMGRhcmslMjBiYWNrZ3JvdW5kfGVufDB8fHx8MTc4NjE5NDU3OXww&ixlib=rb-4.1.0&q=85",
+  "https://assets.isu.pub/document-structure/200619113357-c90849f86c6ded51c202a33de189b218/v1/5f034ac07a72fce44f97adb3aa298c22.jpg",
 ];
 
 export default function People() {

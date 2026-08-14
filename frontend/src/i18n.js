@@ -34,7 +34,7 @@ export const STR = {
       note: "Studio specimen projects — real client work published only with permission",
       items: [
         {
-          name: "Midnight Masala", cat: "Reels & Posters", industry: "Restaurant", year: "2026",
+          name: "Regenbogen", cat: "Reels & Posters", industry: "Restaurant", year: "2026",
           img: "https://images.unsplash.com/photo-1633164442172-dc4147f21954?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzF8MHwxfHNlYXJjaHw0fHxhYnN0cmFjdCUyMGdlbmVyYXRpdmUlMjBhcnQlMjAzZHxlbnwwfHx8fDE3ODYzNjI2MzJ8MA&ixlib=rb-4.1.0&q=85",
           gallery: [
             "https://images.unsplash.com/photo-1633164442172-dc4147f21954?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzF8MHwxfHNlYXJjaHw0fHxhYnN0cmFjdCUyMGdlbmVyYXRpdmUlMjBhcnQlMjAzZHxlbnwwfHx8fDE3ODYzNjI2MzJ8MA&ixlib=rb-4.1.0&q=85",
@@ -47,7 +47,7 @@ export const STR = {
           deliverables: ["8 reels per month", "12 posters per month", "Offer campaign creatives", "Story templates", "Profile rebrand"],
         },
         {
-          name: "Pulse Fitness Studio", cat: "Brand Identity", industry: "Fitness", year: "2026",
+          name: "Handythink", cat: "Brand Identity", industry: "Fitness", year: "2026",
           img: "https://images.pexels.com/photos/12537427/pexels-photo-12537427.jpeg",
           gallery: [
             "https://images.pexels.com/photos/12537427/pexels-photo-12537427.jpeg",
@@ -60,7 +60,7 @@ export const STR = {
           deliverables: ["Logo & lockups", "Colour & type system", "Social template pack", "Class schedule creatives", "Launch poster series"],
         },
         {
-          name: "Lumen Jewellery", cat: "Product Campaign", industry: "Retail", year: "2026",
+          name: "HAPS", cat: "Product Campaign", industry: "Retail", year: "2026",
           img: "https://images.unsplash.com/photo-1670509624628-bbe8efe126a1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzF8MHwxfHNlYXJjaHwzfHxhYnN0cmFjdCUyMGdlbmVyYXRpdmUlMjBhcnQlMjAzZHxlbnwwfHx8fDE3ODYzNjI2MzJ8MA&ixlib=rb-4.1.0&q=85",
           gallery: [
             "https://images.unsplash.com/photo-1670509624628-bbe8efe126a1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzF8MHwxfHNlYXJjaHwzfHxhYnN0cmFjdCUyMGdlbmVyYXRpdmUlMjBhcnQlMjAzZHxlbnwwfHx8fDE3ODYzNjI2MzJ8MA&ixlib=rb-4.1.0&q=85",
@@ -73,7 +73,7 @@ export const STR = {
           deliverables: ["Product macro reels", "Catalogue posters", "Festive campaign set", "Carousel designs", "Story sequences"],
         },
         {
-          name: "Nexus Academy", cat: "Content System", industry: "Education", year: "2026",
+          name: "SLNP", cat: "Content System", industry: "Education", year: "2026",
           img: "https://images.unsplash.com/photo-1633164442172-dc4147f21954?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzF8MHwxfHNlYXJjaHw0fHxhYnN0cmFjdCUyMGdlbmVyYXRpdmUlMjBhcnQlMjAzZHxlbnwwfHx8fDE3ODYzNjI2MzJ8MA&ixlib=rb-4.1.0&q=85",
           gallery: [
             "https://images.unsplash.com/photo-1633164442172-dc4147f21954?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzF8MHwxfHNlYXJjaHw0fHxhYnN0cmFjdCUyMGdlbmVyYXRpdmUlMjBhcnQlMjAzZHxlbnwwfHx8fDE3ODYzNjI2MzJ8MA&ixlib=rb-4.1.0&q=85",
@@ -86,7 +86,7 @@ export const STR = {
           deliverables: ["Monthly content calendar", "Carousel system", "Faculty spotlight reels", "Admission campaign", "Exam-season creatives"],
         },
         {
-          name: "Verde Café", cat: "Launch Creatives", industry: "F&B", year: "2026",
+          name: "Saithenshiridi", cat: "Launch Creatives", industry: "F&B", year: "2026",
           img: "https://images.pexels.com/photos/12537427/pexels-photo-12537427.jpeg",
           gallery: [
             "https://images.pexels.com/photos/12537427/pexels-photo-12537427.jpeg",
@@ -215,7 +215,7 @@ export const STR = {
       note: "ஸ்டுடியோ மாதிரி திட்டங்கள் — உண்மையான client படைப்புகள் அனுமதியுடன் மட்டுமே வெளியிடப்படும்",
       items: [
         {
-          name: "Midnight Masala", cat: "ரீல்ஸ் & போஸ்டர்கள்", industry: "உணவகம்", year: "2026",
+          name: "Regenbogen", cat: "ரீல்ஸ் & போஸ்டர்கள்", industry: "உணவகம்", year: "2026",
           img: "https://images.unsplash.com/photo-1633164442172-dc4147f21954?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzF8MHwxfHNlYXJjaHw0fHxhYnN0cmFjdCUyMGdlbmVyYXRpdmUlMjBhcnQlMjAzZHxlbnwwfHx8fDE3ODYzNjI2MzJ8MA&ixlib=rb-4.1.0&q=85",
           gallery: [
             "https://images.unsplash.com/photo-1633164442172-dc4147f21954?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzF8MHwxfHNlYXJjaHw0fHxhYnN0cmFjdCUyMGdlbmVyYXRpdmUlMjBhcnQlMjAzZHxlbnwwfHx8fDE3ODYzNjI2MzJ8MA&ixlib=rb-4.1.0&q=85",
@@ -228,7 +228,7 @@ export const STR = {
           deliverables: ["மாதம் 8 ரீல்ஸ்", "மாதம் 12 போஸ்டர்கள்", "ஆஃபர் கேம்பெயின் கிரியேட்டிவ்கள்", "ஸ்டோரி டெம்ப்ளேட்டுகள்", "புரோஃபைல் ரீபிராண்ட்"],
         },
         {
-          name: "Pulse Fitness Studio", cat: "பிராண்ட் ஐடென்டிட்டி", industry: "ஃபிட்னஸ்", year: "2026",
+          name: "Handythink", cat: "பிராண்ட் ஐடென்டிட்டி", industry: "ஃபிட்னஸ்", year: "2026",
           img: "https://images.pexels.com/photos/12537427/pexels-photo-12537427.jpeg",
           gallery: [
             "https://images.pexels.com/photos/12537427/pexels-photo-12537427.jpeg",
@@ -241,7 +241,7 @@ export const STR = {
           deliverables: ["லோகோ & லாக்அப்கள்", "நிற & எழுத்துரு system", "சோஷியல் டெம்ப்ளேட் பேக்", "கிளாஸ் ஷெட்யூல் கிரியேட்டிவ்கள்", "லாஞ்ச் போஸ்டர் தொடர்"],
         },
         {
-          name: "Lumen Jewellery", cat: "புராடக்ட் கேம்பெயின்", industry: "சில்லறை", year: "2026",
+          name: "HAPS", cat: "புராடக்ட் கேம்பெயின்", industry: "சில்லறை", year: "2026",
           img: "https://images.unsplash.com/photo-1670509624628-bbe8efe126a1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzF8MHwxfHNlYXJjaHwzfHxhYnN0cmFjdCUyMGdlbmVyYXRpdmUlMjBhcnQlMjAzZHxlbnwwfHx8fDE3ODYzNjI2MzJ8MA&ixlib=rb-4.1.0&q=85",
           gallery: [
             "https://images.unsplash.com/photo-1670509624628-bbe8efe126a1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzF8MHwxfHNlYXJjaHwzfHxhYnN0cmFjdCUyMGdlbmVyYXRpdmUlMjBhcnQlMjAzZHxlbnwwfHx8fDE3ODYzNjI2MzJ8MA&ixlib=rb-4.1.0&q=85",
@@ -254,7 +254,7 @@ export const STR = {
           deliverables: ["புராடக்ட் macro ரீல்ஸ்", "கேட்டலாக் போஸ்டர்கள்", "திருவிழா கேம்பெயின் செட்", "கேரோசல் டிசைன்கள்", "ஸ்டோரி sequences"],
         },
         {
-          name: "Nexus Academy", cat: "கண்டென்ட் சிஸ்டம்", industry: "கல்வி", year: "2026",
+          name: "SLNP", cat: "கண்டென்ட் சிஸ்டம்", industry: "கல்வி", year: "2026",
           img: "https://images.unsplash.com/photo-1633164442172-dc4147f21954?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzF8MHwxfHNlYXJjaHw0fHxhYnN0cmFjdCUyMGdlbmVyYXRpdmUlMjBhcnQlMjAzZHxlbnwwfHx8fDE3ODYzNjI2MzJ8MA&ixlib=rb-4.1.0&q=85",
           gallery: [
             "https://images.unsplash.com/photo-1633164442172-dc4147f21954?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzF8MHwxfHNlYXJjaHw0fHxhYnN0cmFjdCUyMGdlbmVyYXRpdmUlMjBhcnQlMjAzZHxlbnwwfHx8fDE3ODYzNjI2MzJ8MA&ixlib=rb-4.1.0&q=85",
@@ -267,7 +267,7 @@ export const STR = {
           deliverables: ["மாதாந்திர கண்டென்ட் காலெண்டர்", "கேரோசல் சிஸ்டம்", "faculty spotlight ரீல்ஸ்", "admission கேம்பெயின்", "exam-season கிரியேட்டிவ்கள்"],
         },
         {
-          name: "Verde Café", cat: "லாஞ்ச் கிரியேட்டிவ்கள்", industry: "உணவு & பானம்", year: "2026",
+          name: "Saithenshiridi", cat: "லாஞ்ச் கிரியேட்டிவ்கள்", industry: "உணவு & பானம்", year: "2026",
           img: "https://images.pexels.com/photos/12537427/pexels-photo-12537427.jpeg",
           gallery: [
             "https://images.pexels.com/photos/12537427/pexels-photo-12537427.jpeg",

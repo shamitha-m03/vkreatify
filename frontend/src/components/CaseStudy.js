@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, ArrowRight } from "lucide-react";
 import { useLenis } from "lenis/react";
 import { useLang } from "@/i18n";
+import ReelsIcon from "@/components/ReelsIcon";
 
 const EASE = [0.22, 1, 0.36, 1];
 
@@ -11,6 +12,8 @@ export default function CaseStudy({ project, onClose, onNext }) {
   const lenis = useLenis();
   const { t } = useLang();
   const labels = t("caseStudy");
+
+  const hasReels = project && ((project.cat || "").toLowerCase().includes("reel") || (project.scope || "").toLowerCase().includes("reel"));
 
   useEffect(() => {
     if (project) {
@@ -43,9 +46,19 @@ export default function CaseStudy({ project, onClose, onNext }) {
           >
             <div className="min-h-full px-6 sm:px-10 py-8 max-w-6xl mx-auto">
               <div className="flex items-center justify-between mb-14">
-                <span className="font-mono-x text-[10px] tracking-[0.3em] uppercase text-[#ffd76a]/70">
-                  {project.cat} — {project.year}
-                </span>
+                <div className="flex items-center gap-3">
+                  <span className="font-mono-x text-[10px] tracking-[0.3em] uppercase text-[#ffd76a]/70">
+                    {project.cat} — {project.year}
+                  </span>
+                  {hasReels && (
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#ffd76a]/15 border border-[#ffd76a]/40">
+                      <ReelsIcon size={16} color="#ffd76a" glow={true} />
+                      <span className="font-mono-x text-[9px] tracking-widest text-[#ffd76a] uppercase">
+                        INSTAGRAM REELS
+                      </span>
+                    </span>
+                  )}
+                </div>
                 <button
                   data-testid="case-study-close"
                   data-cursor="link"

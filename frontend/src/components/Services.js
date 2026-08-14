@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { useLang } from "@/i18n";
+import ReelsIcon from "@/components/ReelsIcon";
 
 function Row({ s, i }) {
   const onMove = (e) => {
@@ -8,6 +9,8 @@ function Row({ s, i }) {
     e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`);
     e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`);
   };
+
+  const isReels = i === 0 || s.title.toLowerCase().includes("reel");
 
   return (
     <motion.div
@@ -21,13 +24,23 @@ function Row({ s, i }) {
       transition={{ duration: 0.9, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
       className="row-glow group relative border-b border-white/10 py-8 sm:py-12 px-2 sm:px-6 transition-all duration-700 hover:py-10 sm:hover:py-16"
     >
-      <div className="flex items-baseline gap-5 sm:gap-10">
+      <div className="flex items-center gap-5 sm:gap-10">
         <span className="font-mono-x text-xs sm:text-sm text-white/30 group-hover:text-[#ffd76a] group-hover:-translate-y-1 transition-all duration-500">
           0{i + 1}
         </span>
-        <h3 className="font-display font-medium uppercase tracking-tight leading-none text-[clamp(1.6rem,4.6vw,4rem)] text-white/75 group-hover:text-white group-hover:translate-x-3 sm:group-hover:translate-x-6 transition-all duration-700 ease-out-expo">
-          {s.title}
-        </h3>
+        <div className="flex items-center gap-4">
+          <h3 className="font-display font-medium uppercase tracking-tight leading-none text-[clamp(1.6rem,4.6vw,4rem)] text-white/75 group-hover:text-white group-hover:translate-x-3 sm:group-hover:translate-x-6 transition-all duration-700 ease-out-expo">
+            {s.title}
+          </h3>
+          {isReels && (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#ffd76a]/10 border border-[#ffd76a]/30 group-hover:bg-[#ffd76a]/20 group-hover:border-[#ffd76a]/60 group-hover:scale-110 transition-all duration-500">
+              <ReelsIcon size={20} color="#ffd76a" glow={true} />
+              <span className="font-mono-x text-[9px] tracking-widest text-[#ffd76a] uppercase hidden sm:inline-block">
+                INSTAGRAM REELS
+              </span>
+            </span>
+          )}
+        </div>
         <span className="ml-auto hidden sm:block font-mono-x text-[10px] tracking-[0.3em] uppercase text-white/25 group-hover:text-white/60 transition-colors duration-500">
           {s.tag}
         </span>
